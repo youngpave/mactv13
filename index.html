@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Maç TV | Canlı Yayın</title>
     <style>
+        /* Tüm boşlukları sıfırla ve taşmaları engelle */
         * {
             margin: 0;
             padding: 0;
@@ -14,25 +15,22 @@
         body, html {
             width: 100%;
             height: 100%;
-            overflow: hidden;
-            background-color: #000;
+            overflow: hidden; /* Kaydırma çubuklarını gizler */
+            background-color: #000; /* Arka planı siyah yapar */
         }
 
         .video-container {
             position: absolute;
             top: 0;
             left: 0;
-            width: 100vw !important;
-            height: 100vh !important;
-            z-index: 1;
+            width: 100%;
+            height: 100%;
         }
 
-        /* Iframe boyutlarını CSS ile kilitliyoruz */
         iframe {
-            width: 100% !important;
-            height: 100% !important;
+            width: 100%;
+            height: 100%;
             border: none;
-            display: block;
         }
     </style>
 </head>
@@ -40,33 +38,14 @@
 
     <div class="video-container">
         <iframe 
-            id="yayin-frame"
-            src="https://streamsgate.click/tv/tv-33.php" 
+            src="https://dlstreams.com/cast/stream-62.php" 
             allow="autoplay; encrypted-media" 
             allowfullscreen 
             scrolling="no">
         </iframe>
     </div>
 
-    <script>
-        // JavaScript Bekçisi: Her 1 saniyede bir boyutları kontrol eder
-        setInterval(function() {
-            var frame = document.getElementById('yayin-frame');
-            if (frame) {
-                // Eğer bir script boyutları değiştirdiyse, zorla geri yükle
-                if (frame.style.width !== "100%" || frame.parentElement.style.height !== "100vh") {
-                    frame.style.setProperty('width', '100%', 'important');
-                    frame.style.setProperty('height', '100%', 'important');
-                    console.log("Boyut müdahalesi engellendi! 🛡️");
-                }
-            }
-        }, 1000); 
-
-        // Ekranın kapanmasını önlemek için basit bir "uyandırma" fonksiyonu
-        window.addEventListener('click', function() {
-            console.log("Yayın aktif tutuluyor...");
-        });
-    </script>
-
 </body>
 </html>
+
+
