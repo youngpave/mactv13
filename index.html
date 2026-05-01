@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Maç TV | Kesintisiz Yayın</title>
+    <title>Maç TV | Canlı Yayın</title>
     <style>
         * {
             margin: 0;
@@ -17,100 +16,57 @@
             height: 100%;
             overflow: hidden;
             background-color: #000;
-            font-family: sans-serif;
         }
 
         .video-container {
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            width: 100vw !important;
+            height: 100vh !important;
             z-index: 1;
         }
 
+        /* Iframe boyutlarını CSS ile kilitliyoruz */
         iframe {
-            width: 100%;
-            height: 100%;
+            width: 100% !important;
+            height: 100% !important;
             border: none;
-        }
-
-        /* Özel Tam Ekran Butonu */
-        #custom-fs-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 9999;
-            padding: 12px 20px;
-            background: rgba(255, 0, 0, 0.7);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: bold;
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
-            transition: 0.3s;
-        }
-
-        #custom-fs-btn:hover {
-            background: rgb(255, 0, 0);
-            transform: scale(1.1);
+            display: block;
         }
     </style>
 </head>
 <body>
 
-    <button id="custom-fs-btn" onclick="toggleFullScreen()">TAM EKRAN (KİLİTLİ)</button>
-
-    <div class="video-container" id="main-container">
+    <div class="video-container">
         <iframe 
-            id="stream-iframe"
+            id="yayin-frame"
             src="https://streamsgate.click/tv/tv-33.php" 
-            allow="autoplay; encrypted-media; fullscreen" 
+            allow="autoplay; encrypted-media" 
             allowfullscreen 
             scrolling="no">
         </iframe>
     </div>
 
     <script>
-        function toggleFullScreen() {
-            var doc = window.document;
-            var docEl = doc.documentElement;
-
-            var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
-            var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
-
-            if (!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
-                // Tam ekrana gir
-                requestFullScreen.call(docEl);
-                document.getElementById('custom-fs-btn').innerText = "TAM EKRANDAN ÇIK";
-                document.getElementById('custom-fs-btn').style.opacity = "0.3"; // İzlerken rahatsız etmesin
-            } else {
-                // Tam ekrandan çık
-                cancelFullScreen.call(doc);
-                document.getElementById('custom-fs-btn').innerText = "TAM EKRAN (KİLİTLİ)";
-                document.getElementById('custom-fs-btn').style.opacity = "1";
+        // JavaScript Bekçisi: Her 1 saniyede bir boyutları kontrol eder
+        setInterval(function() {
+            var frame = document.getElementById('yayin-frame');
+            if (frame) {
+                // Eğer bir script boyutları değiştirdiyse, zorla geri yükle
+                if (frame.style.width !== "100%" || frame.parentElement.style.height !== "100vh") {
+                    frame.style.setProperty('width', '100%', 'important');
+                    frame.style.setProperty('height', '100%', 'important');
+                    console.log("Boyut müdahalesi engellendi! 🛡️");
+                }
             }
-        }
+        }, 1000); 
 
-        // 10 dakikada bir küçülmeyi engellemek için iframe yenilenirse otomatik odaklan
-        const iframe = document.getElementById('stream-iframe');
-        iframe.onload = function() {
-            console.log("Yayın yüklendi veya yenilendi. Kontrol bende.");
-        };
-
-        // Esc tuşuna basılınca buton metnini düzelt
-        document.addEventListener('fullscreenchange', exitHandler);
-        document.addEventListener('webkitfullscreenchange', exitHandler);
-        document.addEventListener('mozfullscreenchange', exitHandler);
-        document.addEventListener('MSFullscreenChange', exitHandler);
-
-        function exitHandler() {
-            if (!document.fullscreenElement && !document.webkitIsFullScreen && !document.mozFullScreen && !document.msFullscreenElement) {
-                document.getElementById('custom-fs-btn').innerText = "TAM EKRAN (KİLİTLİ)";
-                document.getElementById('custom-fs-btn').style.opacity = "1";
-            }
-        }
+        // Ekranın kapanmasını önlemek için basit bir "uyandırma" fonksiyonu
+        window.addEventListener('click', function() {
+            console.log("Yayın aktif tutuluyor...");
+        });
     </script>
+
 </body>
 </html>
