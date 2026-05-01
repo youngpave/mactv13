@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Maç TV | Tam Sığdırılmış</title>
+    <title>Maç TV | Tam Ekran Düzenlenmiş</title>
     <style>
         * {
             margin: 0;
@@ -17,13 +17,13 @@
             background-color: #000;
             overflow: hidden;
             display: flex;
-            flex-direction: column; /* Butonu alta koymak için kolon yapısı */
+            flex-direction: column;
             justify-content: center;
             align-items: center;
         }
 
-        /* Video Kapsayıcı */
-        .video-box {
+        /* Video Kapsayıcı - Tam ekran yapılan yer burası */
+        #video-box {
             width: 100%;
             aspect-ratio: 16 / 9; 
             position: relative;
@@ -34,46 +34,32 @@
             overflow: hidden;
         }
 
-        /* Iframe: Genişliği 1000px tutuyoruz ki player butonları (ayarlar, ses vb.) ekrana sığsın */
+        /* Iframe: Başlangıçta gizli tutuyoruz, JS ile sığdıracağız */
         iframe {
             position: absolute;
-            width: 1000px; 
-            height: 562px;
+            width: 1280px; 
+            height: 720px;
             border: none;
-            /* Player'ı telefon genişliğine göre orantılı küçültür */
-            transform: scale(calc(100vw / 1000));
-            transform-origin: center center;
-        }
-
-        /* Tam Ekran Buton Alanı */
-        .controls {
-            margin-top: 20px;
-            z-index: 10;
+            transform-origin: center center; /* Tam merkezden büyü */
+            transition: transform 0.2s ease; /* Yumuşak geçiş */
         }
 
         .btn-fullscreen {
-            padding: 12px 25px;
-            background-color: #e74c3c; /* Kırmızı şık bir buton */
+            margin-top: 20px;
+            padding: 15px 30px;
+            background-color: #27ae60;
             color: white;
             border: none;
             border-radius: 50px;
-            font-family: sans-serif;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .btn-fullscreen:active {
-            transform: scale(0.95);
+            z-index: 100;
         }
     </style>
 </head>
 <body>
 
-    <div class="video-box" id="fullscreen-target">
+    <div id="video-box">
         <iframe 
             id="main-iframe"
             src="https://streamsgate.click/tv/tv-33.php" 
@@ -83,42 +69,42 @@
         </iframe>
     </div>
 
-    <div class="controls">
-        <button class="btn-fullscreen" onclick="openFullscreen()">
-            <svg width="18" height="18" fill="white" viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
-            TAM EKRAN İZLE
-        </button>
-    </div>
+    <button class="btn-fullscreen" onclick="goFull()">TAM EKRAN YAP</button>
 
     <script>
-        function openFullscreen() {
-            var elem = document.getElementById("fullscreen-target");
+        const iframe = document.getElementById('main-iframe');
+        const box = document.getElementById('video-box');
+
+        // Videoyu ekrana sığdıran fonksiyon
+        function scaleVideo() {
+            // O anki genişliği al (Tam ekransa tüm ekranı, değilse sayfa genişliğini)
+            let currentWidth = window.innerWidth;
+            if (document.fullscreenElement) {
+                currentWidth = screen.width;
+            }
             
-            // Farklı tarayıcılar için tam ekran komutları
-            if (elem.requestFullscreen) {
-                elem.requestFullscreen();
-            } else if (elem.webkitRequestFullscreen) { /* Safari & Chrome Mobile */
-                elem.webkitRequestFullscreen();
-            } else if (elem.msRequestFullscreen) { /* IE11 */
-                elem.msRequestFullscreen();
-            }
+            // 1280px olan iframe'i mevcut genişliğe oranla
+            const scaleAmount = currentWidth / 1280;
+            iframe.style.transform = `scale(${scaleAmount})`;
         }
 
-        // Tam ekrana geçildiğinde veya çıkıldığında ölçeklendirmeyi güncelle
-        document.addEventListener('fullscreenchange', updateScale);
-        document.addEventListener('webkitfullscreenchange', updateScale);
+        // Sayfa yüklendiğinde ve boyut değiştiğinde çalıştır
+        window.addEventListener('load', scaleVideo);
+        window.addEventListener('resize', scaleVideo);
 
-        function updateScale() {
-            const iframe = document.getElementById('main-iframe');
-            if (document.fullscreenElement || document.webkitFullscreenElement) {
-                // Tam ekranda genişliği ekranın gerçek genişliğine göre yeniden hesapla
-                let scale = window.innerWidth / 1000;
-                iframe.style.transform = `scale(${scale})`;
-            } else {
-                // Normal modda varsayılan ölçek
-                iframe.style.transform = `scale(calc(100vw / 1000))`;
+        function goFull() {
+            if (box.requestFullscreen) {
+                box.requestFullscreen();
+            } else if (box.webkitRequestFullscreen) {
+                box.webkitRequestFullscreen();
             }
+            // Tam ekrana geçişten hemen sonra tekrar hesapla
+            setTimeout(scaleVideo, 100);
         }
+
+        // Tam ekrandan çıkınca/girince tetikle
+        document.addEventListener('fullscreenchange', scaleVideo);
+        document.addEventListener('webkitfullscreenchange', scaleVideo);
     </script>
 
 </body>
