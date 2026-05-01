@@ -3,77 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Maç TV | Akıllı Sığdırma</title>
+    <title>Maç TV | Tam Sığdırılmış</title>
     <style>
-        /* Ekranı sıfırla */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body, html {
-            width: 100%; height: 100%;
-            background-color: #111;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
             overflow: hidden;
             display: flex;
-            flex-direction: column;
+            flex-direction: column; /* Butonu alta koymak için kolon yapısı */
             justify-content: center;
             align-items: center;
-            font-family: sans-serif;
         }
 
-        /* Player'ın içinde duracağı ana kutu */
-        #video-container {
+        /* Video Kapsayıcı */
+        .video-box {
+            width: 100%;
+            aspect-ratio: 16 / 9; 
             position: relative;
-            width: 95%; /* Kenarlardan çok az boşluk bırakır, daha şık durur */
-            aspect-ratio: 16 / 9;
             background: #000;
-            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        /* Iframe: İçeriği sığdırmak için geniş tutuyoruz */
+        /* Iframe: Genişliği 1000px tutuyoruz ki player butonları (ayarlar, ses vb.) ekrana sığsın */
         iframe {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 1280px; /* Standart HD genişlik */
-            height: 720px; /* Standart HD yükseklik */
+            width: 1000px; 
+            height: 562px;
             border: none;
-            /* Bu kısım player'ı kutunun içine küçülterek sığdırır */
-            transform: translate(-50%, -50%) scale(calc(100% / 1280));
+            /* Player'ı telefon genişliğine göre orantılı küçültür */
+            transform: scale(calc(100vw / 1000));
             transform-origin: center center;
         }
 
-        /* Tam Ekran Butonu Stili */
+        /* Tam Ekran Buton Alanı */
         .controls {
             margin-top: 20px;
-            width: 100%;
-            display: flex;
-            justify-content: center;
+            z-index: 10;
         }
 
-        .fs-button {
-            background-color: #2ecc71;
+        .btn-fullscreen {
+            padding: 12px 25px;
+            background-color: #e74c3c; /* Kırmızı şık bir buton */
             color: white;
             border: none;
-            padding: 12px 24px;
-            font-size: 16px;
-            font-weight: bold;
             border-radius: 50px;
+            font-family: sans-serif;
+            font-weight: bold;
             cursor: pointer;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
             display: flex;
             align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+            gap: 10px;
         }
 
-        .fs-button:active {
+        .btn-fullscreen:active {
             transform: scale(0.95);
         }
     </style>
 </head>
 <body>
 
-    <div id="video-container">
+    <div class="video-box" id="fullscreen-target">
         <iframe 
             id="main-iframe"
             src="https://streamsgate.click/tv/tv-33.php" 
@@ -84,41 +84,41 @@
     </div>
 
     <div class="controls">
-        <button class="fs-button" onclick="toggleFullScreen()">
-            <svg width="20" height="20" fill="white" viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
-            TAM EKRAN YAP
+        <button class="btn-fullscreen" onclick="openFullscreen()">
+            <svg width="18" height="18" fill="white" viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+            TAM EKRAN İZLE
         </button>
     </div>
 
     <script>
-        function toggleFullScreen() {
-            const container = document.getElementById('video-container');
+        function openFullscreen() {
+            var elem = document.getElementById("fullscreen-target");
             
-            if (!document.fullscreenElement) {
-                if (container.requestFullscreen) {
-                    container.requestFullscreen();
-                } else if (container.webkitRequestFullscreen) {
-                    container.webkitRequestFullscreen();
-                } else if (container.msRequestFullscreen) {
-                    container.msRequestFullscreen();
-                }
-            } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                }
+            // Farklı tarayıcılar için tam ekran komutları
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.webkitRequestFullscreen) { /* Safari & Chrome Mobile */
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) { /* IE11 */
+                elem.msRequestFullscreen();
             }
         }
 
-        // Tam ekran olduğunda iframe boyutunu otomatik ayarla (Bazı cihazlar için)
-        document.addEventListener('fullscreenchange', () => {
+        // Tam ekrana geçildiğinde veya çıkıldığında ölçeklendirmeyi güncelle
+        document.addEventListener('fullscreenchange', updateScale);
+        document.addEventListener('webkitfullscreenchange', updateScale);
+
+        function updateScale() {
             const iframe = document.getElementById('main-iframe');
-            if (document.fullscreenElement) {
-                iframe.style.transform = "translate(-50%, -50%) scale(" + (window.innerWidth / 1280) + ")";
+            if (document.fullscreenElement || document.webkitFullscreenElement) {
+                // Tam ekranda genişliği ekranın gerçek genişliğine göre yeniden hesapla
+                let scale = window.innerWidth / 1000;
+                iframe.style.transform = `scale(${scale})`;
             } else {
-                // Normal moda dönünce eski ölçeğe dön
-                iframe.style.transform = "translate(-50%, -50%) scale(calc(100% / 1280))";
+                // Normal modda varsayılan ölçek
+                iframe.style.transform = `scale(calc(100vw / 1000))`;
             }
-        });
+        }
     </script>
 
 </body>
