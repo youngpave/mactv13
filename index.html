@@ -3,107 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Maç TV | Canlı Yayın</title>
+    <title>Maç TV | Mobil Uyumlu</title>
     <style>
-        * {
+        /* Sayfa ayarları */
+        body, html {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-        }
-
-        body, html {
             width: 100%;
             height: 100%;
-            overflow: hidden;
-            background-color: #000;
+            background-color: #000; /* Arka plan siyah kalsın */
+            display: flex;
+            flex-direction: column;
         }
 
-        .video-container {
+        /* Videonun içinde duracağı kutu */
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            /* 16:9 oranını korumak için yükseklik otomatik hesaplanır */
+            padding-top: 56.25%; 
+            background: #000;
+        }
+
+        /* Iframe'i kutunun içine tam sığdır */
+        iframe {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        iframe {
-            width: 100%;
-            height: 100%;
             border: none;
         }
 
-        /* Tam ekran tetikleyici katman */
-        #fullscreen-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.1);
-            z-index: 9999;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        /* Yayın başlığı veya alt kısım için alan (Opsiyonel) */
+        .content {
+            padding: 15px;
             color: white;
             font-family: sans-serif;
             text-align: center;
-        }
-        
-        .play-hint {
-            padding: 20px;
-            background: rgba(0,0,0,0.7);
-            border-radius: 10px;
-            border: 1px solid #333;
         }
     </style>
 </head>
 <body>
 
-    <div id="fullscreen-overlay">
-        <div class="play-hint">
-            <p>Yayını Tam Ekran İzlemek İçin Tıklayın</p>
-        </div>
-    </div>
-
-    <div class="video-container" id="player-section">
+    <div class="video-wrapper">
         <iframe 
-            id="stream-iframe"
-            src="https://dlstreams.com/cast/stream-62.php" 
+            src="https://streamsgate.click/tv/tv-33.php" 
             allow="autoplay; encrypted-media; fullscreen" 
             allowfullscreen 
             scrolling="no">
         </iframe>
     </div>
 
-    <script>
-        const overlay = document.getElementById('fullscreen-overlay');
-        const container = document.getElementById('player-section');
-
-        overlay.addEventListener('click', () => {
-            // Tam ekran isteği gönder
-            if (container.requestFullscreen) {
-                container.requestFullscreen();
-            } else if (container.webkitRequestFullscreen) { /* Safari */
-                container.webkitRequestFullscreen();
-            } else if (container.msRequestFullscreen) { /* IE11 */
-                container.msRequestFullscreen();
-            }
-
-            // Katmanı gizle ki videoya erişilebilsin
-            overlay.style.display = 'none';
-        });
-
-        // Tam ekrandan çıkılırsa katmanı tekrar göster (opsiyonel)
-        document.addEventListener('fullscreenchange', () => {
-            if (!document.fullscreenElement) {
-                overlay.style.display = 'flex';
-            }
-        });
-    </script>
+    <div class="content">
+        <h3>Canlı Yayın İzleniyor...</h3>
+        <p>Görüntü otomatik olarak genişliğe sığdırıldı.</p>
+    </div>
 
 </body>
 </html>
