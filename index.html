@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Maç TV | Tam Sığdırma</title>
+    <title>Maç TV | Tam Sığdırılmış</title>
     <style>
+        /* Sayfa sıfırlama */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body, html {
@@ -15,58 +16,54 @@
             flex-direction: column;
         }
 
-        /* Ana Kapsayıcı */
-        #video-container {
-            flex: 1; /* Kalan tüm alanı doldur */
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #000;
+        /* 1. Resimdeki (1000018384.jpg) görüntüyü sağlayan kapsayıcı */
+        #video-box {
+            width: 100%; /* Telefonun genişliğini tam kapla */
+            aspect-ratio: 16 / 9; /* Yayın oranını koru */
             position: relative;
+            background: #000;
+            margin-top: 0; /* En üste yapıştırır */
         }
 
-        /* Iframe: Ekranı tamamen doldurması için zorlanan ayar */
+        /* Iframe: Kapsayıcının içine tam yayılan ayar */
         iframe {
-            width: 100% !important;
-            height: 100% !important;
-            border: none;
             position: absolute;
             top: 0;
             left: 0;
-            object-fit: cover; /* Videoyu boşluk bırakmadan yayar */
+            width: 100% !important; /* Genişliği zorla %100 yap */
+            height: 100% !important; /* Yüksekliği kapsayıcıya göre ayarla */
+            border: none;
         }
 
-        /* Buton Alanı */
+        /* Buton alanı */
         .controls {
-            height: 80px;
-            background: #111;
+            flex: 1; /* Kalan alanı kapla */
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: center; /* Butonu dikeyde ortalar */
         }
 
         .fs-btn {
-            padding: 12px 40px;
-            background: #f39c12;
+            padding: 15px 35px;
+            background: #27ae60;
             color: white;
             border: none;
-            border-radius: 30px;
+            border-radius: 50px;
             font-weight: bold;
             font-size: 16px;
             cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
         }
 
-        /* Tam ekrandayken butonu gizle ve videoyu her yere yay */
-        :fullscreen #video-container { width: 100vw; height: 100vh; }
+        /* Tam ekrana geçildiğinde butonu gizle */
         :fullscreen .controls { display: none; }
+        :-webkit-full-screen .controls { display: none; }
     </style>
 </head>
 <body>
 
-    <div id="video-container">
+    <div id="video-box">
         <iframe 
-            id="player"
             src="https://streamsgate.click/tv/tv-33.php" 
             allow="autoplay; encrypted-media; fullscreen" 
             allowfullscreen 
@@ -75,27 +72,24 @@
     </div>
 
     <div class="controls">
-        <button class="fs-btn" onclick="goFull()">TAM EKRAN YAP</button>
+        <button class="fs-btn" onclick="openFull()">TAM EKRAN YAP</button>
     </div>
 
     <script>
-        function goFull() {
-            const container = document.getElementById('video-container');
-            if (!document.fullscreenElement) {
-                if (container.requestFullscreen) {
-                    container.requestFullscreen();
-                } else if (container.webkitRequestFullscreen) {
-                    container.webkitRequestFullscreen();
+        function openFull() {
+            const videoBox = document.getElementById('video-box');
+            if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+                if (videoBox.requestFullscreen) {
+                    videoBox.requestFullscreen();
+                } else if (videoBox.webkitRequestFullscreen) {
+                    videoBox.webkitRequestFullscreen();
                 }
             } else {
-                document.exitFullscreen();
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
             }
         }
-
-        // Ekran yönü değiştiğinde videoyu yenile (bazı telefonlar için)
-        window.addEventListener("orientationchange", function() {
-            location.reload();
-        });
     </script>
 
 </body>
