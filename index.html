@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Maç TV | Tam Sığdırılmış</title>
+    <title>Maç TV | HD Yayın</title>
     <style>
-        /* Sayfa sıfırlama */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body, html {
@@ -16,35 +15,32 @@
             flex-direction: column;
         }
 
-        /* 1. Resimdeki (1000018384.jpg) görüntüyü sağlayan kapsayıcı */
-        #video-box {
-            width: 100%; /* Telefonun genişliğini tam kapla */
-            aspect-ratio: 16 / 9; /* Yayın oranını koru */
-            position: relative;
+        /* 1. Resimdeki gibi en üste yapışık ve tam genişlikte alan */
+        #video-container {
+            width: 100%;
+            aspect-ratio: 16 / 9;
             background: #000;
-            margin-top: 0; /* En üste yapıştırır */
+            position: relative;
         }
 
-        /* Iframe: Kapsayıcının içine tam yayılan ayar */
         iframe {
             position: absolute;
             top: 0;
             left: 0;
-            width: 100% !important; /* Genişliği zorla %100 yap */
-            height: 100% !important; /* Yüksekliği kapsayıcıya göre ayarla */
+            width: 100% !important;
+            height: 100% !important;
             border: none;
         }
 
-        /* Buton alanı */
-        .controls {
-            flex: 1; /* Kalan alanı kapla */
+        .button-area {
+            flex: 1;
             display: flex;
             justify-content: center;
-            align-items: center; /* Butonu dikeyde ortalar */
+            align-items: center;
         }
 
         .fs-btn {
-            padding: 15px 35px;
+            padding: 14px 30px;
             background: #27ae60;
             color: white;
             border: none;
@@ -52,42 +48,38 @@
             font-weight: bold;
             font-size: 16px;
             cursor: pointer;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
 
-        /* Tam ekrana geçildiğinde butonu gizle */
-        :fullscreen .controls { display: none; }
-        :-webkit-full-screen .controls { display: none; }
+        /* Tam ekranda butonu sakla */
+        :fullscreen .button-area { display: none; }
     </style>
 </head>
 <body>
 
-    <div id="video-box">
+    <div id="video-container">
         <iframe 
-            src="https://streamsgate.click/tv/tv-33.php" 
+            id="match-player"
+            src="https://wikisport.club/play/bein1tr0.php" 
+            referrerpolicy="no-referrer"
             allow="autoplay; encrypted-media; fullscreen" 
             allowfullscreen 
             scrolling="no">
         </iframe>
     </div>
 
-    <div class="controls">
-        <button class="fs-btn" onclick="openFull()">TAM EKRAN YAP</button>
+    <div class="button-area">
+        <button class="fs-btn" onclick="goFull()">TAM EKRAN İZLE</button>
     </div>
 
     <script>
-        function openFull() {
-            const videoBox = document.getElementById('video-box');
-            if (!document.fullscreenElement && !document.webkitFullscreenElement) {
-                if (videoBox.requestFullscreen) {
-                    videoBox.requestFullscreen();
-                } else if (videoBox.webkitRequestFullscreen) {
-                    videoBox.webkitRequestFullscreen();
-                }
+        function goFull() {
+            const el = document.getElementById('video-container');
+            if (!document.fullscreenElement) {
+                if (el.requestFullscreen) el.requestFullscreen();
+                else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
             } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                }
+                document.exitFullscreen();
             }
         }
     </script>
