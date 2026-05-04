@@ -1,51 +1,113 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Maç TV | Canlı Yayın</title>
-    <style>
-        /* Tüm boşlukları sıfırla ve taşmaları engelle */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Maç TV | Sıfır Boşluk</title>
 
-        body, html {
-            width: 100%;
-            height: 100%;
-            overflow: hidden; /* Kaydırma çubuklarını gizler */
-            background-color: #000; /* Arka planı siyah yapar */
-        }
+<style>
+    html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        background: #000;
+        overflow: hidden;
+    }
 
-        .video-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
+    .video-container {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        background: #000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+    }
 
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-    </style>
+    /* İframe Ayarları */
+    #video-iframe {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border: none;
+        /* Görüntü oranını bozmadan boşlukları yok etmek için scale kullanıyoruz */
+        transform: scale(1.06); 
+        transform-origin: center;
+    }
+
+    /* TAM EKRANDA BOŞLUKLARI ZORLA KAPAT */
+    #video-iframe:fullscreen, 
+    #video-iframe:-webkit-full-screen {
+        width: 100vw !important;
+        height: 100vh !important;
+        transform: scale(1.10) !important; /* Tam ekranda zoom miktarını artır */
+    }
+
+    /* BAŞLAT BUTONU */
+    #fs-button {
+        position: fixed;
+        bottom: 40px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 16px 40px;
+        background: #ff0000;
+        color: white;
+        border: 2px solid #fff;
+        border-radius: 50px;
+        font-weight: bold;
+        font-size: 18px;
+        cursor: pointer;
+        z-index: 999999;
+        box-shadow: 0 0 30px rgba(255, 0, 0, 0.8);
+    }
+</style>
 </head>
+
 <body>
 
-    <div class="video-container">
-        <iframe 
-            src="https://lextertv300.com/51ffc17d-7af5-42a3-83e6-6dd6d9e8e358.html" 
-            allow="autoplay; encrypted-media" 
-            allowfullscreen 
-            scrolling="no">
-        </iframe>
-    </div>
+<div class="video-container" id="player">
+
+    <iframe 
+        id="video-iframe"
+        src="https://dlstreams.com/stream/stream-63.php"
+        allow="autoplay; fullscreen"
+        allowfullscreen="true"
+        webkitallowfullscreen="true"
+        mozallowfullscreen="true">
+    </iframe>
+
+    <button id="fs-button" onclick="forceFull()">
+        BAŞLAT (SIFIR BOŞLUK)
+    </button>
+
+</div>
+
+<script>
+function forceFull() {
+    const iframe = document.getElementById("video-iframe");
+    const btn = document.getElementById("fs-button");
+
+    // Doğrudan iframe'i tam ekran yapıyoruz ki player alanı tamamen doldursun
+    if (iframe.requestFullscreen) {
+        iframe.requestFullscreen();
+    } else if (iframe.webkitRequestFullscreen) {
+        iframe.webkitRequestFullscreen();
+    } else if (iframe.mozRequestFullScreen) {
+        iframe.mozRequestFullScreen();
+    }
+
+    btn.style.display = "none";
+}
+
+// Esc ile çıkınca butonu geri getir
+document.addEventListener("fullscreenchange", () => {
+    if (!document.fullscreenElement) {
+        document.getElementById("fs-button").style.display = "block";
+    }
+});
+</script>
 
 </body>
 </html>
-
-
