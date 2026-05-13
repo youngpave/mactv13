@@ -1,33 +1,44 @@
 <?php
-// 1. Hedef URL
+// Hedef kanal linki
 $url = "https://dlhd.pk/stream/stream-62.php";
 
-// 2. cURL Başlat
 $ch = curl_init();
 
-// 3. Tarayıcıyı ve Yönlendirmeyi Taklit Et (PC Chrome gibi davran)
+// Header (Başlık) ayarları - Kendimizi tamamen orijinal site gibi tanıtıyoruz
 $headers = [
-    "Referer: https://dlhd.pk/", // Karşı siteye "Ben senin içinden geliyorum" diyoruz.
+    "Origin: https://dlhd.pk",
+    "Referer: https://dlhd.pk/",
     "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-    "Accept-Language: tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7"
+    "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+    "Accept-Language: tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7",
+    "Connection: keep-alive"
 ];
 
 curl_setopt($ch, CURLOPT_URL, $url);
 curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); // Eğer link başka yere yönlenirse takip et.
-curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // SSL hatalarını görmezden gel (stabilite için).
+curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
-// 4. İçeriği çek
+// Çerez (Cookie) Yönetimi - Oturumu canlı tutar
+curl_setopt($ch, CURLOPT_COOKIEFILE, ""); // Gelen çerezleri oku
+curl_setopt($ch, CURLOPT_COOKIEJAR, "");  // Çerezleri oturum boyunca sakla
+
 $response = curl_exec($ch);
 curl_close($ch);
 
-// 5. İçeriği ekrana basmadan önce HTML içindeki "relative" linkleri düzeltelim
-// Yayıncı site içindeki dosyalar (js, css) dlhd.pk üzerinde olduğu için yolları tam yazmalıyız.
-$base_url = "https://dlhd.pk/stream/";
-$response = str_replace('src="', 'src="'.$base_url, $response);
-$response = str_replace('href="', 'href="'.$base_url, $response);
-
-// 6. Ekrana Bas
-echo $response;
+// Yayıncı sitenin içindeki linkleri (JS, CSS, Resim) kendi üzerinden değil, 
+// orijinal site üzerinden çekmesi için yolları düzeltiyoruz.
+if ($response) {
+    $base_url = "https://dlhd.pk/stream/";
+    
+    // Göreceli yolları tam URL'ye çeviriyoruz
+    $response = str_replace('src="', 'src="' . $base_url, $response);
+    $response = str_replace('href="', 'href="' . $base_url, $response);
+    
+    // Eğer içerikte başka yönlendirmeler varsa onları da temizlemiş oluruz
+    echo $response;
+} else {
+    echo "Yayın şu an çekilemiyor, lütfen bağlantınızı kontrol edin.";
+}
 ?>
