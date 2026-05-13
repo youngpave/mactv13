@@ -5,43 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Maç TV | Canlı Yayın</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body, html {
-            width: 100%;
-            height: 100%;
-            overflow: hidden; 
-            background-color: #000;
-        }
-
-        .video-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body, html { width: 100%; height: 100%; overflow: hidden; background-color: #000; }
+        .video-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        iframe { width: 100%; height: 100%; border: none; }
     </style>
 </head>
 <body>
 
     <div class="video-container">
+        <!-- srcdoc kullanarak iframe içinde temiz bir sayfa oluşturuyoruz -->
         <iframe 
-            src="https://dlhd.pk/stream/stream-62.php" 
+            id="player_iframe"
             allow="autoplay; encrypted-media; picture-in-picture" 
             allowfullscreen 
             scrolling="no"
-            referrerpolicy="no-referrer">
+            srcdoc="<html><body style='margin:0;padding:0;background:#000;'><script>window.location.href='https://dlhd.pk/stream/stream-62.php';</script></body></html>">
         </iframe>
     </div>
 
