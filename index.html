@@ -1,50 +1,40 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Maç TV | Canlı Yayın</title>
+    
+    <!-- Video.js Player Standart Kütüphaneleri -->
+    <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
+    <script src="https://vjs.zencdn.net/7.20.3/video.js"></script>
+    
     <style>
-        /* Tüm boşlukları sıfırla ve taşmaları engelle */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body, html {
-            width: 100%;
-            height: 100%;
-            overflow: hidden; /* Kaydırma çubuklarını gizler */
-            background-color: #000; /* Arka planı siyah yapar */
-        }
-
-        .video-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
+        /* Tam ekran video yerleşimi */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body, html { width: 100%; height: 100%; overflow: hidden; background-color: #000; }
+        .video-container { width: 100%; height: 100%; position: absolute; top: 0; left: 0; }
+        .video-js { width: 100% !important; height: 100% !important; }
     </style>
 </head>
 <body>
 
     <div class="video-container">
-        <!-- Doğrudan dlhd.pk'yi çağırmıyoruz, kendi yazdığımız temizleyici PHP'yi çağırıyoruz -->
-        <iframe 
-            src="yayin-cek.php" 
-            allow="autoplay; encrypted-media; picture-in-picture; fullscreen" 
-            allowfullscreen 
-            scrolling="no">
-        </iframe>
+        <!-- Doğrudan dış linki değil, sunucumuzdaki maskeli stream.php dosyasını çağırıyoruz -->
+        <video id="mactv-player" class="video-js vjs-default-skin vjs-big-play-centered" controls autoplay preload="auto">
+            <source src="stream.php" type="application/x-mpegURL">
+        </video>
     </div>
+
+    <script>
+        // Player'ı canlandırıyoruz
+        var player = videojs('mactv-player', {
+            autoplay: true,
+            controls: true,
+            fluid: false
+        });
+    </script>
 
 </body>
 </html>
