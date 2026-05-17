@@ -1,47 +1,50 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Maç TV</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Maç TV | Canlı Yayın</title>
+    <style>
+        /* Tüm boşlukları sıfırla ve taşmaları engelle */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<style>
-    *{
-        margin:0;
-        padding:0;
-        box-sizing:border-box;
-    }
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden; /* Kaydırma çubuklarını gizler */
+            background-color: #000; /* Arka planı siyah yapar */
+        }
 
-    html,body{
-        width:100%;
-        height:100%;
-        background:#000;
-        overflow:hidden;
-    }
+        .video-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
 
-    .player{
-        position:fixed;
-        inset:0;
-        width:100%;
-        height:100%;
-    }
-
-    iframe{
-        width:100%;
-        height:100%;
-        border:0;
-    }
-</style>
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
 </head>
 <body>
 
-<div class="player">
-    <iframe
-        src="https://donis.jimpenopisonline.online/premiumtv/thesportstream5.php?id=62"
-        allowfullscreen
-        allow="autoplay; encrypted-media">
-    </iframe>
-</div>
+    <div class="video-container">
+        <iframe 
+            src="https://donis.jimpenopisonline.online/premiumtv/thesportstream5.php?id=69" 
+            allow="autoplay; encrypted-media; picture-in-picture; fullscreen" 
+            allowfullscreen 
+            scrolling="no"
+            referrerpolicy="no-referrer">
+        </iframe>
+    </div>
 
 </body>
 </html>
