@@ -1,50 +1,47 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Maç TV | Canlı Yayın</title>
-    <style>
-        /* Tüm boşlukları sıfırla ve taşmaları engelle */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Maç TV</title>
 
-        body, html {
-            width: 100%;
-            height: 100%;
-            overflow: hidden; /* Kaydırma çubuklarını gizler */
-            background-color: #000; /* Arka planı siyah yapar */
-        }
+<style>
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+    }
 
-        .video-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
+    html,body{
+        width:100%;
+        height:100%;
+        background:#000;
+        overflow:hidden;
+    }
 
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-    </style>
+    .player{
+        position:fixed;
+        inset:0;
+        width:100%;
+        height:100%;
+    }
+
+    iframe{
+        width:100%;
+        height:100%;
+        border:0;
+    }
+</style>
 </head>
 <body>
 
-    <div class="video-container">
-        <iframe 
-            src="https://donis.jimpenopisonline.online/premiumtv/thesportstream5.php?id=69" 
-            allow="autoplay; encrypted-media; picture-in-picture; fullscreen" 
-            allowfullscreen 
-            scrolling="no"
-            referrerpolicy="no-referrer">
-        </iframe>
-    </div>
+<div class="player">
+    <iframe
+        src="https://streams.embedsportex.site/player#c2MvOTI5Mg=="
+        allowfullscreen
+        allow="autoplay; encrypted-media">
+    </iframe>
+</div>
 
 </body>
 </html>
