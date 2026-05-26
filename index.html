@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Maç TV</title>
 
 <style>
@@ -26,19 +26,48 @@
         height:100%;
     }
 
-    .player embed{
+    iframe{
         width:100%;
         height:100%;
+        border:0;
     }
 </style>
 </head>
 <body>
 
 <div class="player">
-    <embed
-        src="https://hesgoales.com/stream.php?ch=beINSPORTS5TR"
-        type="text/html">
+    <iframe
+        id="mactv-iframe"
+        src="https://hesgoales.com/stream.php?ch=beINSPORTS1TR"
+        allowfullscreen
+        allow="autoplay; encrypted-media">
+    </iframe>
 </div>
+
+<script>
+    const iframe = document.getElementById('mactv-iframe');
+
+    // Tam 8 dakikada bir (8 * 60 * 1000 milisaniye) otomatik yenileme döngüsü
+    setInterval(tazele, 8 * 60 * 1000);
+
+    // Ek Güvenlik: Eğer 8 dakika dolmadan yayın bir şekilde koparsa anında tetiklenir
+    iframe.addEventListener('error', function() {
+        console.log('Maç TV: Yayın beklenmedik şekilde koptu, anında yeni token alınıyor...');
+        tazele();
+    });
+
+    // Her siteye uyumlu Dinamik Tazeleme Fonksiyonu
+    function tazele() {
+        if (iframe) {
+            // URL'in sonundaki eski parametreleri temizleyip ana linki alıyoruz
+            let mevcutUrl = iframe.src.split('?')[0]; 
+            
+            // Sonuna yeni zaman damgası ekleyerek karşı siteden sıfır kilometre token çekiyoruz
+            iframe.src = mevcutUrl + "?t=" + new Date().getTime();
+            console.log('Maç TV: 8. dakika doldu, iframe başarıyla tazelendi, donma engellendi.');
+        }
+    }
+</script>
 
 </body>
 </html>
