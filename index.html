@@ -38,7 +38,7 @@
 <div class="player">
     <iframe
         id="mactv-iframe"
-        src="https://lovetier.bz/player/beINSPORTS1TR"
+        src="https://player.cfbu247.sbs/embed/bein-sports-1-turkey"
         allowfullscreen
         allow="autoplay; encrypted-media">
     </iframe>
@@ -47,12 +47,12 @@
 <script>
     const iframe = document.getElementById('mactv-iframe');
 
-    // Tam 8 dakikada bir (8 * 60 * 1000 milisaniye) otomatik yenileme döngüsü
-    setInterval(tazele, 8 * 60 * 1000);
+    // Tam 5 dakikada bir (5 * 60 * 1000 milisaniye) otomatik yenileme döngüsü
+    setInterval(tazele, 5 * 60 * 1000);
 
-    // Ek Güvenlik: Eğer 8 dakika dolmadan yayın bir şekilde koparsa anında tetiklenir
+    // Ek Güvenlik: Eğer 5 dakika dolmadan yayın beklenmedik şekilde koparsa anında tetiklenir
     iframe.addEventListener('error', function() {
-        console.log('Maç TV: Yayın beklenmedik şekilde koptu, anında yeni token alınıyor...');
+        console.log('Maç TV: Yayın koptu, anında yeni token alınıyor...');
         tazele();
     });
 
@@ -64,7 +64,7 @@
             
             // Sonuna yeni zaman damgası ekleyerek karşı siteden sıfır kilometre token çekiyoruz
             iframe.src = mevcutUrl + "?t=" + new Date().getTime();
-            console.log('Maç TV: 8. dakika doldu, iframe başarıyla tazelendi, donma engellendi.');
+            console.log('Maç TV: 5. dakika doldu, iframe başarıyla tazelendi. Kilit kırıldı!');
         }
     }
 </script>
