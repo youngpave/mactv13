@@ -1,47 +1,46 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Maç TV</title>
-
-<style>
-    *{
-        margin:0;
-        padding:0;
-        box-sizing:border-box;
-    }
-
-    html,body{
-        width:100%;
-        height:100%;
-        background:#000;
-        overflow:hidden;
-    }
-
-    .player{
-        position:fixed;
-        inset:0;
-        width:100%;
-        height:100%;
-    }
-
-    iframe{
-        width:100%;
-        height:100%;
-        border:0;
-    }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Maç TV - Kesintisiz Canlı Yayın</title>
+    
+    <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { width: 100%; height: 100%; background: #000; overflow: hidden; }
+        
+        /* Oynatıcıyı ekrana tam oturtma */
+        .video-container {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .video-js {
+            width: 100% !important;
+            height: 100% !important;
+        }
+    </style>
 </head>
 <body>
 
-<div class="player">
-    <iframe
-        src="https://ninguno.net/sd0embed/NBA?pid=1&gacat=NBA+TV&gatxt=NBA&v=nbatv&csrf=MTc2LjIzNC4yMDcuNDA.MTc3OTc4MzE4Mw.YzBlOTA1YzEyZjM"
-        allowfullscreen
-        allow="autoplay; encrypted-media">
-    </iframe>
+<div class="video-container">
+    <video id="mactv-player" class="video-js vjs-default-skin vjs-big-play-centered" controls autoplay preload="auto">
+        <source src="https://SENIN-NGROK-LINKIN.ngrok-free.app/live-proxy/nbatv/index.m3u8" type="application/x-mpegURL">
+    </video>
 </div>
 
+<script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+<script>
+    // Oynatıcıyı ateşle
+    var player = videojs('mactv-player', {
+        fluid: true,
+        autoplay: true,
+        controls: true
+    });
+</script>
+
 </body>
-</html>ne 
+</html>
