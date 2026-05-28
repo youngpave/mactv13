@@ -1,4 +1,6 @@
-<script src="https://cdn.jsdelivr.net/npm/@clappr/player@latest/dist/clappr.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@clappr/hlsjs-playback@latest/dist/hlsjs-playback.min.js"></script>
 
 <div id="player"></div>
 
@@ -7,7 +9,7 @@ html,body{
     margin:0;
     width:100%;
     height:100%;
-    background:#000;
+    background:black;
     overflow:hidden;
 }
 
@@ -17,14 +19,13 @@ html,body{
     left:0;
     width:100vw;
     height:100vh;
-    z-index:9999;
 }
 </style>
 
 <script>
 var player = new Clappr.Player({
 
-    source: "https://rdchannel.rd.go.th/contents/msteam_live_13-08-63.mp4",
+    source: "https://deneme-1-d0w5.onrender.com/proxy/m3u?url=http://vip-flying.xyz:2095/live/hs2254tv/hs2209dd00/104267.m3u8",
 
     parentId: "#player",
 
@@ -34,6 +35,14 @@ var player = new Clappr.Player({
 
     autoPlay: true,
 
-    mute: false
+    mute: false,
+
+    plugins: [HlsjsPlayback],
+
+    playback: {
+        hlsjsConfig: {
+            liveSyncDurationCount: 3
+        }
+    }
 });
 </script>
