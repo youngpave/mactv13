@@ -1,292 +1,42 @@
-<!DOCTYPE html>
-<html lang="tr">
+<!DOCTYPE HTML>
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <script type="text/javascript" charset="utf-8" src="http://flavio.nytimes.com:8080/latest/clappr.js"></script>
+  <title>HLSJS Test Page</title>
+  <script type="text/javascript" charset="utf-8">
+window.onload = function() {
+  var playerLive = new Clappr.Player({
+    source: "http://srv6.zoeweb.tv:1935/z330-live/stream/playlist.m3u8",
+    parentId: '#player-wrapper-live',
+    autoPlay: true,
+    hideMediaControl: false,
+    width: 426, height: 240,
+    debug: true
+  });
 
-<title>Modern Video Player</title>
+  var playerVod = new Clappr.Player({
+    source: "https://s3-us-west-2.amazonaws.com/nytimesencoding/output_normalized0000_1_marathon_zombies_hls/video.m3u8",
+//    source: "http://sample.vodobox.net/skate_phantom_flex_4k/skate_phantom_flex_4k.m3u8",
+    parentId: '#player-wrapper-vod',
+    autoPlay: true,
+    hideMediaControl: false,
+    width: 426, height: 240
+  });
 
-<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-
-<style>
-html,body{
-    margin:0;
-    width:100%;
-    height:100%;
-    background:#111;
-    overflow:hidden;
-    font-family:Arial,sans-serif;
+  this.playerDvr = new Clappr.Player({
+    source: "can't reveal this source, add one with playlist bigger than hlsMinimumDvrSize to see dvr working",
+    parentId: '#player-wrapper-dvr',
+    autoPlay: true,
+    hideMediaControl: false,
+    width: 426, height: 240
+  });
 }
-
-.player{
-    position:relative;
-    width:100%;
-    height:100%;
-    background:black;
-}
-
-video{
-    width:100%;
-    height:100%;
-    object-fit:contain;
-    background:black;
-}
-
-/* Alt kontrol alanı */
-.controls{
-    position:absolute;
-    bottom:0;
-    left:0;
-    width:100%;
-    padding:12px 18px;
-    box-sizing:border-box;
-
-    background:linear-gradient(
-        transparent,
-        rgba(0,0,0,0.85)
-    );
-
-    display:flex;
-    align-items:center;
-    gap:18px;
-
-    z-index:20;
-}
-
-/* Play */
-.play-btn{
-    width:0;
-    height:0;
-
-    border-top:18px solid transparent;
-    border-bottom:18px solid transparent;
-    border-left:28px solid white;
-
-    cursor:pointer;
-}
-
-/* Süre */
-.time{
-    color:white;
-    font-size:15px;
-    min-width:120px;
-}
-
-/* Çizgi */
-.progress{
-    flex:1;
-    height:4px;
-    background:rgba(255,255,255,0.25);
-    border-radius:50px;
-    cursor:pointer;
-    position:relative;
-}
-
-.progress-filled{
-    width:40%;
-    height:100%;
-    background:#2f80ff;
-    border-radius:50px;
-    position:relative;
-}
-
-.progress-filled::after{
-    content:'';
-    position:absolute;
-    right:-8px;
-    top:50%;
-    transform:translateY(-50%);
-    width:16px;
-    height:16px;
-    border-radius:50%;
-    background:white;
-}
-
-/* Ses */
-.volume{
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-
-.volume-icon{
-    color:white;
-    font-size:22px;
-}
-
-.volume input{
-    width:90px;
-}
-
-/* Fullscreen */
-.fullscreen{
-    color:white;
-    font-size:28px;
-    cursor:pointer;
-}
-</style>
+  </script>
 </head>
-
 <body>
-
-<div class="player" id="player">
-
-<video id="video" autoplay playsinline></video>
-
-<div class="controls">
-
-<div class="play-btn" id="playBtn"></div>
-
-<div class="time">
-<span id="current">00:00</span>
-&nbsp;|&nbsp;
-<span id="duration">00:00</span>
-</div>
-
-<div class="progress" id="progress">
-<div class="progress-filled" id="progressFilled"></div>
-</div>
-
-<div class="volume">
-<div class="volume-icon">🔈</div>
-
-<input
-type="range"
-id="volume"
-min="0"
-max="1"
-step="0.01"
-value="1">
-</div>
-
-<div class="fullscreen" id="fullscreen">
-⛶
-</div>
-
-</div>
-
-</div>
-
-<script>
-const video = document.getElementById('video');
-
-const playBtn = document.getElementById('playBtn');
-
-const current = document.getElementById('current');
-
-const duration = document.getElementById('duration');
-
-const progress = document.getElementById('progress');
-
-const progressFilled = document.getElementById('progressFilled');
-
-const volume = document.getElementById('volume');
-
-const fullscreen = document.getElementById('fullscreen');
-
-/* M3U8 */
-const videoSrc = "https://deneme-1-d0w5.onrender.com/proxy/m3u?url=http://vip-flying.xyz:2095/live/hs2254tv/hs2209dd00/104267.m3u8";
-
-/* HLS */
-if(Hls.isSupported()){
-
-    const hls = new Hls({
-        lowLatencyMode:true
-    });
-
-    hls.loadSource(videoSrc);
-
-    hls.attachMedia(video);
-
-}else{
-
-    video.src = videoSrc;
-}
-
-/* Play Pause */
-playBtn.onclick = () => {
-
-    if(video.paused){
-
-        video.play();
-
-        playBtn.style.borderLeft =
-        "28px solid white";
-
-    }else{
-
-        video.pause();
-
-        playBtn.style.borderLeft =
-        "10px solid white";
-    }
-};
-
-/* Ses */
-volume.oninput = () => {
-
-    video.volume = volume.value;
-};
-
-/* Süre */
-video.addEventListener('timeupdate', () => {
-
-    const percent =
-    (video.currentTime / video.duration) * 100;
-
-    progressFilled.style.width =
-    percent + "%";
-
-    current.innerHTML =
-    format(video.currentTime);
-
-    duration.innerHTML =
-    format(video.duration);
-});
-
-/* Progress tıklama */
-progress.onclick = (e) => {
-
-    const width = progress.clientWidth;
-
-    const clickX = e.offsetX;
-
-    video.currentTime =
-    (clickX / width) * video.duration;
-};
-
-/* Fullscreen */
-fullscreen.onclick = () => {
-
-    if(document.fullscreenElement){
-
-        document.exitFullscreen();
-
-    }else{
-
-        document.getElementById('player')
-        .requestFullscreen();
-    }
-};
-
-/* Format */
-function format(sec){
-
-    if(isNaN(sec)) return "00:00";
-
-    let minutes =
-    Math.floor(sec / 60);
-
-    let seconds =
-    Math.floor(sec % 60);
-
-    if(minutes < 10) minutes = "0" + minutes;
-
-    if(seconds < 10) seconds = "0" + seconds;
-
-    return minutes + ":" + seconds;
-}
-</script>
-
+  live<div id="player-wrapper-live"></div>
+  vod<div id="player-wrapper-vod"></div>
+  dvr<div id="player-wrapper-dvr"></div>
 </body>
-</html>
+</html
