@@ -1,24 +1,22 @@
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Tam Ekran Clappr Player</title>
     
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/clappr/clappr-hlsjs-playback@latest/dist/clappr-hlsjs-playback.min.js"></script>
 
     <style>
-        /* Ekranı tamamen kaplaması için CSS */
         body, html {
             margin: 0;
             padding: 0;
             width: 100%;
             height: 100%;
-            overflow: hidden; /* Kaydırma çubuklarını engeller */
-            background-color: black;
+            background-color: #000;
+            overflow: hidden;
         }
-
         #player-wrapper {
             width: 100%;
             height: 100%;
@@ -31,12 +29,16 @@
 
     <script>
         var player = new Clappr.Player({
-            source: 'https://deneme-1-d0w5.onrender.com/proxy/m3u?url=http://vip-flying.xyz:2095/live/hs2254tv/hs2209dd00/104267.m3u8', // Buraya kendi video linkini koyabilirsin
+            source: 'https://deneme-1-d0w5.onrender.com/proxy/m3u?url=http://vip-flying.xyz:2095/live/hs2254tv/hs2209dd00/104267.m3u8', // m3u8 linkini buraya yapıştır
             parentId: '#player-wrapper',
             width: '100%',
             height: '100%',
-            autoPlay: true,
-            mute: false
+            autoPlay: false, // Mobil kısıtlamalar için false daha iyidir
+            plugins: [HlsjsPlayback], // HLS eklentisini burada aktif ettik
+            hlsjsConfig: {
+                enableWorker: true,
+                lowLatencyMode: true
+            }
         });
     </script>
 </body>
