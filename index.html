@@ -1,8 +1,39 @@
-<script type="text/javascript"
-      src="https://cdn.jsdelivr.net/npm/@clappr/player@latest/dist/clappr.min.js">
-  </script>
-  <div id="player"></div>
-  <script>
-    var player = new Clappr.Player({source: "https://rdchannel.rd.go.th/contents/msteam_live_13-08-63.mp4", parentId: "#player" ,poster :'http://clappr.io/poster.png'});
-  </script>
- 
+<script src="https://cdn.jsdelivr.net/npm/@clappr/player@latest/dist/clappr.min.js"></script>
+
+<div id="player"></div>
+
+<style>
+html,body{
+    margin:0;
+    width:100%;
+    height:100%;
+    background:#000;
+    overflow:hidden;
+}
+
+#player{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100vw;
+    height:100vh;
+    z-index:9999;
+}
+</style>
+
+<script>
+var player = new Clappr.Player({
+
+    source: "https://rdchannel.rd.go.th/contents/msteam_live_13-08-63.mp4",
+
+    parentId: "#player",
+
+    width: "100%",
+
+    height: "100%",
+
+    autoPlay: true,
+
+    mute: false
+});
+</script>
