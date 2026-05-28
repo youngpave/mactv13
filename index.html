@@ -1,27 +1,27 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Clappr Player</title>
 
-<!-- Clappr -->
 <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@clappr/hlsjs-playback@latest/dist/hlsjs-playback.min.js"></script>
 
 <style>
-    html,body{
-        margin:0;
-        padding:0;
-        width:100%;
-        height:100%;
-        background:#000;
-        overflow:hidden;
-    }
+html,body{
+    margin:0;
+    width:100%;
+    height:100%;
+    background:black;
+    overflow:hidden;
+}
 
-    #player{
-        width:100%;
-        height:100%;
-    }
+#player{
+    width:100%;
+    height:100%;
+}
 </style>
 </head>
 
@@ -30,25 +30,26 @@
 <div id="player"></div>
 
 <script>
-    var player = new Clappr.Player({
-        source: "https://deneme-1-d0w5.onrender.com/proxy/m3u?url=http://vip-flying.xyz:2095/live/hs2254tv/hs2209dd00/104267.m3u8",
-        parentId: "#player",
+var player = new Clappr.Player({
+    source: "https://deneme-1-d0w5.onrender.com/proxy/m3u?url=http://vip-flying.xyz:2095/live/hs2254tv/hs2209dd00/104267.m3u8",
 
-        autoPlay: true,
-        mute: false,
+    parentId: "#player",
 
-        width: "100%",
-        height: "100%",
+    width: "100%",
+    height: "100%",
 
-        playback: {
-            playInline: true
-        },
+    autoPlay: true,
 
-        mediacontrol: {
-            seekbar: "#ff0000",
-            buttons: "#ffffff"
+    mute: false,
+
+    plugins: [HlsjsPlayback],
+
+    playback: {
+        hlsjsConfig: {
+            liveSyncDurationCount: 3
         }
-    });
+    }
+});
 </script>
 
 </body>
