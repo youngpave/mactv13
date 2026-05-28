@@ -1,24 +1,32 @@
 <script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/@clappr/hlsjs-playback@latest/dist/hlsjs-playback.min.js"></script>
-
 <div id="player"></div>
 
 <style>
 html,body{
     margin:0;
+    padding:0;
     width:100%;
     height:100%;
-    background:black;
+    background:#000;
     overflow:hidden;
 }
 
 #player{
-    position:fixed;
-    top:0;
-    left:0;
-    width:100vw;
+    width:100%;
     height:100vh;
+}
+
+/* Alt bar düzeltme */
+.clappr .media-control{
+    opacity:1 !important;
+    visibility:visible !important;
+    bottom:0 !important;
+}
+
+/* Video tam otursun */
+.clappr video{
+    object-fit:contain !important;
 }
 </style>
 
@@ -35,14 +43,6 @@ var player = new Clappr.Player({
 
     autoPlay: true,
 
-    mute: false,
-
-    plugins: [HlsjsPlayback],
-
-    playback: {
-        hlsjsConfig: {
-            liveSyncDurationCount: 3
-        }
-    }
+    mute: false
 });
 </script>
