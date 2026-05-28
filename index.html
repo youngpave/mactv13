@@ -1,29 +1,107 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <style>
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; }
-        
-        video { 
-            width: 100vw; 
-            height: 100vh; 
-            object-fit: cover; 
-            display: block; 
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        /* İŞTE BURASI: Tarayıcının zaman/dakika çubuğunu (timeline) gizler */
-        video::-webkit-media-controls-timeline,
-        video::-webkit-media-controls-current-time-display,
-        video::-webkit-media-controls-time-remaining-display {
-            display: none !important;
-        }
-    </style>
+<title>Live TV Player</title>
+
+<link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+
+<style>
+html,body{
+    margin:0;
+    width:100%;
+    height:100%;
+    background:#000;
+    overflow:hidden;
+}
+
+.player-wrapper{
+    position:relative;
+    width:100%;
+    height:100%;
+}
+
+video{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+}
+
+/* LIVE Yazısı */
+.live-badge{
+    position:absolute;
+    top:15px;
+    left:15px;
+    background:red;
+    color:white;
+    padding:6px 12px;
+    border-radius:8px;
+    font-weight:bold;
+    z-index:9999;
+    font-family:Arial;
+}
+</style>
 </head>
+
 <body>
 
-    <video id="videoPlayer" controls autoplay playsinline>
-        <source "https://deneme-1-d0w5.onrender.com/proxy/m3u?url=http://vip-flying.xyz:2095/live/hs2254tv/hs2209dd00/104267.m3u8" type="application/x-mpegURL">
-    </video>
+<div class="player-wrapper">
+
+<div class="live-badge">LIVE</div>
+
+<video
+    id="player"
+    controls
+    autoplay
+    playsinline
+></video>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
+
+<script>
+const video = document.getElementById('player');
+
+const videoSrc = 'https://deneme-1-d0w5.onrender.com/proxy/m3u?url=http://vip-flying.xyz:2095/live/hs2254tv/hs2209dd00/104267.m3u8';
+
+if (Hls.isSupported()) {
+
+    const hls = new Hls({
+        lowLatencyMode: true,
+        backBufferLength: 90
+    });
+
+    hls.loadSource(videoSrc);
+    hls.attachMedia(video);
+
+    hls.on(Hls.Events.MANIFEST_PARSED,function() {
+        video.play();
+    });
+
+} else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+
+    video.src = videoSrc;
+    video.addEventListener('loadedmetadata',function() {
+        video.play();
+    });
+}
+
+const player = new Plyr(video,{
+    controls:[
+        'play-large',
+        'play',
+        'progress',
+        'current-time',
+        'mute',
+        'volume',
+        'fullscreen'
+    ]
+});
+</script>
 
 </body>
 </html>
