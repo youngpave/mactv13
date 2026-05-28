@@ -2,15 +2,16 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>Custom Live Player</title>
+<title>LIVE PLAYER</title>
 
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 
 <style>
 html,body{
     margin:0;
+    padding:0;
     width:100%;
     height:100%;
     background:#000;
@@ -18,10 +19,10 @@ html,body{
     font-family:Arial, sans-serif;
 }
 
-#player-container{
+.player-container{
     position:relative;
     width:100%;
-    height:100%;
+    height:100vh;
     background:#000;
 }
 
@@ -32,144 +33,230 @@ video{
     background:#000;
 }
 
-/* Alt kontrol bar */
+/* Alt bar */
 .controls{
     position:absolute;
     bottom:0;
     left:0;
     width:100%;
-    background:linear-gradient(transparent, rgba(0,0,0,0.8));
-    padding:15px;
+    background:linear-gradient(to top, rgba(0,0,0,.9), rgba(0,0,0,.4));
+    padding:10px;
     box-sizing:border-box;
+}
+
+/* Mavi çizgi */
+.progress{
+    width:100%;
+    height:4px;
+    background:rgba(255,255,255,.2);
+    border-radius:20px;
+    overflow:hidden;
+    margin-bottom:10px;
+}
+
+.progress-bar{
+    width:100%;
+    height:100%;
+    background:#00aaff;
+    animation:liveMove 2s linear infinite;
+}
+
+@keyframes liveMove{
+    0%{transform:translateX(-100%);}
+    100%{transform:translateX(100%);}
+}
+
+.bottom-controls{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.left-controls{
     display:flex;
     align-items:center;
     gap:15px;
 }
 
-/* Buton */
-button{
-    background:none;
-    border:none;
+.btn{
     color:white;
-    font-size:18px;
+    font-size:20px;
+    cursor:pointer;
+    user-select:none;
+}
+
+.live{
+    color:white;
+    font-size:15px;
+    font-weight:bold;
+    display:flex;
+    align-items:center;
+    gap:6px;
+}
+
+.live::before{
+    content:'';
+    width:10px;
+    height:10px;
+    background:red;
+    border-radius:50%;
+    animation:blink 1s infinite;
+}
+
+@keyframes blink{
+    50%{opacity:.3;}
+}
+
+.right-controls{
+    display:flex;
+    align-items:center;
+    gap:18px;
+}
+
+.icon{
+    color:white;
+    font-size:20px;
     cursor:pointer;
 }
 
-/* Progress */
-.progress{
-    flex:1;
-    height:5px;
-    background:#444;
-    border-radius:10px;
-    overflow:hidden;
+/* Loading */
+.loader{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    width:60px;
+    height:60px;
+    border:4px solid rgba(255,255,255,.2);
+    border-top:4px solid #00aaff;
+    border-radius:50%;
+    animation:spin 1s linear infinite;
+    z-index:5;
 }
 
-.progress-bar{
-    width:35%;
-    height:100%;
-    background:red;
-}
-
-/* LIVE */
-.live{
-    background:red;
-    color:white;
-    padding:4px 10px;
-    border-radius:6px;
-    font-size:14px;
-    font-weight:bold;
-}
-
-/* Ses */
-.volume{
-    width:80px;
-}
-
-/* Fullscreen */
-#fullscreen{
-    font-size:20px;
+@keyframes spin{
+    100%{transform:translate(-50%,-50%) rotate(360deg);}
 }
 </style>
 </head>
 
 <body>
 
-<div id="player-container">
+<div class="player-container">
 
-<video id="video" autoplay playsinline></video>
+    <div class="loader" id="loader"></div>
 
-<div class="controls">
+    <video id="video" autoplay playsinline muted></video>
 
-<button id="play">▶</button>
+    <div class="controls">
 
-<div class="progress">
-<div class="progress-bar"></div>
-</div>
+        <div class="progress">
+            <div class="progress-bar"></div>
+        </div>
 
-<div class="live">LIVE</div>
+        <div class="bottom-controls">
 
-<input type="range" min="0" max="1" step="0.1" value="1" class="volume" id="volume">
+            <div class="left-controls">
+                <div class="btn" id="playBtn">❚❚</div>
 
-<button id="fullscreen">⛶</button>
+                <div class="btn" id="muteBtn">🔊</div>
 
-</div>
+                <div class="live">LIVE</div>
+            </div>
+
+            <div class="right-controls">
+                <div class="icon">📷</div>
+                <div class="icon" id="fullscreenBtn">⛶</div>
+            </div>
+
+        </div>
+
+    </div>
 
 </div>
 
 <script>
 const video = document.getElementById('video');
-const playBtn = document.getElementById('play');
-const volume = document.getElementById('volume');
-const fullscreen = document.getElementById('fullscreen');
+const loader = document.getElementById('loader');
 
-const videoSrc = "https://deneme-1-d0w5.onrender.com/proxy/m3u?url=http://vip-flying.xyz:2095/live/hs2254tv/hs2209dd00/104267.m3u8";
+const streamUrl = "https://deneme-1-d0w5.onrender.com/proxy/m3u?url=http://vip-flying.xyz:2095/live/hs2254tv/hs2209dd00/104267.m3u8";
 
+/* Daha stabil HLS ayarları */
 if(Hls.isSupported()){
 
     const hls = new Hls({
-        lowLatencyMode:true
+        lowLatencyMode:true,
+        liveSyncDuration:3,
+        maxBufferLength:30,
+        maxMaxBufferLength:60,
+        backBufferLength:90,
+        enableWorker:true,
+        autoStartLoad:true,
+        fragLoadingTimeOut:20000,
+        manifestLoadingTimeOut:20000
     });
 
-    hls.loadSource(videoSrc);
+    hls.loadSource(streamUrl);
     hls.attachMedia(video);
 
     hls.on(Hls.Events.MANIFEST_PARSED,function(){
         video.play();
     });
 
-}else if(video.canPlayType('application/vnd.apple.mpegurl')){
+    hls.on(Hls.Events.FRAG_BUFFERED,function(){
+        loader.style.display='none';
+    });
 
-    video.src = videoSrc;
-    video.play();
+    /* Donarsa otomatik toparla */
+    hls.on(Hls.Events.ERROR,function(event,data){
+
+        if(data.fatal){
+
+            switch(data.type){
+
+                case Hls.ErrorTypes.NETWORK_ERROR:
+                    console.log("Network Error");
+                    hls.startLoad();
+                    break;
+
+                case Hls.ErrorTypes.MEDIA_ERROR:
+                    console.log("Media Error");
+                    hls.recoverMediaError();
+                    break;
+
+                default:
+                    hls.destroy();
+                    break;
+            }
+        }
+    });
+
+}else if(video.canPlayType('application/vnd.apple.mpegurl')){
+    video.src = streamUrl;
 }
 
 /* Play Pause */
+const playBtn = document.getElementById('playBtn');
+
 playBtn.onclick = () => {
 
     if(video.paused){
         video.play();
-        playBtn.innerHTML = "⏸";
+        playBtn.innerHTML='❚❚';
     }else{
         video.pause();
-        playBtn.innerHTML = "▶";
+        playBtn.innerHTML='▶';
     }
 };
 
 /* Ses */
-volume.oninput = () => {
-    video.volume = volume.value;
+const muteBtn = document.getElementById('muteBtn');
+
+muteBtn.onclick = () => {
+
+    video.muted = !video.muted;
+
+    muteBtn.innerHTML = video.muted ? '🔇' : '🔊';
 };
 
-/* Fullscreen */
-fullscreen.onclick = () => {
-
-    if(document.fullscreenElement){
-        document.exitFullscreen();
-    }else{
-        document.getElementById('player-container').requestFullscreen();
-    }
-};
-</script>
-
-</body>
-</html>
+/* Full
