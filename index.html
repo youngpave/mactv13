@@ -1,39 +1,17 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Live Player</title>
 
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 
-<div id="player">
-
-    <video id="video" autoplay playsinline></video>
-
-    <!-- ÜST -->
-    <div class="top-bar">
-        <div class="live-box">
-            <span class="dot"></span>
-            LIVE
-        </div>
-    </div>
-
-    <!-- ALT -->
-    <div class="controls">
-
-        <button id="play">▶</button>
-
-        <div class="progress">
-            <div class="buffer"></div>
-            <div class="played"></div>
-        </div>
-
-        <div class="time">
-            LIVE
-        </div>
-
-        <button id="fullscreen">⛶</button>
-
-    </div>
-
-</div>
-
 <style>
+
 html,body{
     margin:0;
     width:100%;
@@ -57,48 +35,70 @@ video{
     background:#000;
 }
 
-/* ÜST */
+/* ÜST BAR */
 .top-bar{
     position:absolute;
+
     top:0;
     left:0;
+
     width:100%;
-    padding:15px;
+
+    padding:18px;
+
     box-sizing:border-box;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
     z-index:10;
 
     background:linear-gradient(
-        rgba(0,0,0,.7),
+        rgba(0,0,0,.75),
         transparent
     );
 }
 
-/* LIVE */
-.live-box{
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-
-    background:rgba(0,0,0,.6);
-
+/* LIVE PLAYER */
+.live-player{
     color:white;
 
-    padding:8px 14px;
-
-    border-radius:30px;
-
-    font-size:13px;
+    font-size:16px;
 
     font-weight:bold;
 
     letter-spacing:1px;
 }
 
+/* LIVE */
+.live{
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    background:rgba(0,0,0,.6);
+
+    padding:8px 14px;
+
+    border-radius:30px;
+
+    color:white;
+
+    font-size:13px;
+
+    font-weight:bold;
+}
+
 .dot{
     width:10px;
     height:10px;
-    background:red;
     border-radius:50%;
+    background:red;
 }
 
 /* ALT BAR */
@@ -110,7 +110,7 @@ video{
 
     width:100%;
 
-    padding:14px;
+    padding:16px;
 
     box-sizing:border-box;
 
@@ -128,18 +128,19 @@ video{
     z-index:10;
 }
 
-/* Buton */
+/* PLAY */
 button{
     background:none;
     border:none;
     color:white;
-    font-size:22px;
+    font-size:24px;
     cursor:pointer;
 }
 
-/* ÇİZGİ */
+/* MAVİ ÇİZGİ */
 .progress{
     flex:1;
+
     height:5px;
 
     background:rgba(255,255,255,.2);
@@ -151,48 +152,100 @@ button{
     position:relative;
 }
 
-/* Buffer */
-.buffer{
-    position:absolute;
-
-    width:70%;
-    height:100%;
-
-    background:rgba(255,255,255,.25);
-}
-
-/* Oynayan çizgi */
 .played{
-    position:absolute;
+    width:40%;
 
-    width:35%;
     height:100%;
 
-    background:#00a2ff;
+    background:#0094ff;
 
     border-radius:30px;
+
+    position:relative;
 }
 
-/* Süre */
-.time{
+/* Yuvarlak nokta */
+.played::after{
+    content:'';
+
+    position:absolute;
+
+    right:-7px;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    width:14px;
+    height:14px;
+
+    border-radius:50%;
+
+    background:white;
+}
+
+/* FULLSCREEN */
+.fullscreen{
+    font-size:24px;
     color:white;
-    font-size:14px;
-}
-
-/* Hover efekti */
-.controls{
-    transition:.3s;
-}
-
-#player:hover .controls{
-    opacity:1;
+    cursor:pointer;
 }
 </style>
+</head>
+
+<body>
+
+<div id="player">
+
+<video
+id="video"
+autoplay
+playsinline
+controlslist="nodownload"
+></video>
+
+<!-- ÜST -->
+<div class="top-bar">
+
+<div class="live-player">
+LIVE PLAYER
+</div>
+
+<div class="live">
+<div class="dot"></div>
+LIVE
+</div>
+
+</div>
+
+<!-- ALT -->
+<div class="controls">
+
+<button id="play">
+▶
+</button>
+
+<div class="progress">
+<div class="played"></div>
+</div>
+
+<div
+class="fullscreen"
+id="fullscreen">
+⛶
+</div>
+
+</div>
+
+</div>
 
 <script>
-const video = document.getElementById('video');
 
-const playBtn = document.getElementById('play');
+const video =
+document.getElementById('video');
+
+const playBtn =
+document.getElementById('play');
 
 const fullscreenBtn =
 document.getElementById('fullscreen');
@@ -211,7 +264,8 @@ if(Hls.isSupported()){
 
     hls.attachMedia(video);
 
-    hls.on(Hls.Events.MANIFEST_PARSED,
+    hls.on(
+    Hls.Events.MANIFEST_PARSED,
     function(){
 
         video.play();
@@ -257,4 +311,8 @@ fullscreenBtn.onclick = () => {
         .requestFullscreen();
     }
 };
+
 </script>
+
+</body>
+</html>
