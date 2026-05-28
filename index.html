@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Custom Live Player</title>
+<title>Modern Video Player</title>
 
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 
@@ -13,104 +13,155 @@ html,body{
     margin:0;
     width:100%;
     height:100%;
-    background:#000;
+    background:#111;
     overflow:hidden;
-    font-family:Arial, sans-serif;
+    font-family:Arial,sans-serif;
 }
 
-#player-container{
+.player{
     position:relative;
     width:100%;
     height:100%;
-    background:#000;
+    background:black;
 }
 
 video{
     width:100%;
     height:100%;
     object-fit:contain;
-    background:#000;
+    background:black;
 }
 
-/* Alt kontrol bar */
+/* Alt kontrol alanı */
 .controls{
     position:absolute;
     bottom:0;
     left:0;
     width:100%;
-    background:linear-gradient(transparent, rgba(0,0,0,0.8));
-    padding:15px;
+    padding:12px 18px;
     box-sizing:border-box;
+
+    background:linear-gradient(
+        transparent,
+        rgba(0,0,0,0.85)
+    );
+
     display:flex;
     align-items:center;
-    gap:15px;
+    gap:18px;
+
+    z-index:20;
 }
 
-/* Buton */
-button{
-    background:none;
-    border:none;
-    color:white;
-    font-size:18px;
+/* Play */
+.play-btn{
+    width:0;
+    height:0;
+
+    border-top:18px solid transparent;
+    border-bottom:18px solid transparent;
+    border-left:28px solid white;
+
     cursor:pointer;
 }
 
-/* Progress */
+/* Süre */
+.time{
+    color:white;
+    font-size:15px;
+    min-width:120px;
+}
+
+/* Çizgi */
 .progress{
     flex:1;
-    height:5px;
-    background:#444;
-    border-radius:10px;
-    overflow:hidden;
+    height:4px;
+    background:rgba(255,255,255,0.25);
+    border-radius:50px;
+    cursor:pointer;
+    position:relative;
 }
 
-.progress-bar{
-    width:35%;
+.progress-filled{
+    width:40%;
     height:100%;
-    background:red;
+    background:#2f80ff;
+    border-radius:50px;
+    position:relative;
 }
 
-/* LIVE */
-.live{
-    background:red;
-    color:white;
-    padding:4px 10px;
-    border-radius:6px;
-    font-size:14px;
-    font-weight:bold;
+.progress-filled::after{
+    content:'';
+    position:absolute;
+    right:-8px;
+    top:50%;
+    transform:translateY(-50%);
+    width:16px;
+    height:16px;
+    border-radius:50%;
+    background:white;
 }
 
 /* Ses */
 .volume{
-    width:80px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.volume-icon{
+    color:white;
+    font-size:22px;
+}
+
+.volume input{
+    width:90px;
 }
 
 /* Fullscreen */
-#fullscreen{
-    font-size:20px;
+.fullscreen{
+    color:white;
+    font-size:28px;
+    cursor:pointer;
 }
 </style>
 </head>
 
 <body>
 
-<div id="player-container">
+<div class="player" id="player">
 
 <video id="video" autoplay playsinline></video>
 
 <div class="controls">
 
-<button id="play">▶</button>
+<div class="play-btn" id="playBtn"></div>
 
-<div class="progress">
-<div class="progress-bar"></div>
+<div class="time">
+<span id="current">00:00</span>
+&nbsp;|&nbsp;
+<span id="duration">00:00</span>
 </div>
 
-<div class="live">LIVE</div>
+<div class="progress" id="progress">
+<div class="progress-filled" id="progressFilled"></div>
+</div>
 
-<input type="range" min="0" max="1" step="0.1" value="1" class="volume" id="volume">
+<div class="volume">
+<div class="volume-icon">🔈</div>
 
-<button id="fullscreen">⛶</button>
+<input
+type="range"
+id="volume"
+min="0"
+max="1"
+step="0.01"
+value="1">
+</div>
+
+<div class="fullscreen" id="fullscreen">
+⛶
+</div>
 
 </div>
 
@@ -118,12 +169,25 @@ button{
 
 <script>
 const video = document.getElementById('video');
-const playBtn = document.getElementById('play');
+
+const playBtn = document.getElementById('playBtn');
+
+const current = document.getElementById('current');
+
+const duration = document.getElementById('duration');
+
+const progress = document.getElementById('progress');
+
+const progressFilled = document.getElementById('progressFilled');
+
 const volume = document.getElementById('volume');
+
 const fullscreen = document.getElementById('fullscreen');
 
+/* M3U8 */
 const videoSrc = "https://deneme-1-d0w5.onrender.com/proxy/m3u?url=http://vip-flying.xyz:2095/live/hs2254tv/hs2209dd00/104267.m3u8";
 
+/* HLS */
 if(Hls.isSupported()){
 
     const hls = new Hls({
@@ -131,44 +195,97 @@ if(Hls.isSupported()){
     });
 
     hls.loadSource(videoSrc);
+
     hls.attachMedia(video);
 
-    hls.on(Hls.Events.MANIFEST_PARSED,function(){
-        video.play();
-    });
-
-}else if(video.canPlayType('application/vnd.apple.mpegurl')){
+}else{
 
     video.src = videoSrc;
-    video.play();
 }
 
 /* Play Pause */
 playBtn.onclick = () => {
 
     if(video.paused){
+
         video.play();
-        playBtn.innerHTML = "⏸";
+
+        playBtn.style.borderLeft =
+        "28px solid white";
+
     }else{
+
         video.pause();
-        playBtn.innerHTML = "▶";
+
+        playBtn.style.borderLeft =
+        "10px solid white";
     }
 };
 
 /* Ses */
 volume.oninput = () => {
+
     video.volume = volume.value;
+};
+
+/* Süre */
+video.addEventListener('timeupdate', () => {
+
+    const percent =
+    (video.currentTime / video.duration) * 100;
+
+    progressFilled.style.width =
+    percent + "%";
+
+    current.innerHTML =
+    format(video.currentTime);
+
+    duration.innerHTML =
+    format(video.duration);
+});
+
+/* Progress tıklama */
+progress.onclick = (e) => {
+
+    const width = progress.clientWidth;
+
+    const clickX = e.offsetX;
+
+    video.currentTime =
+    (clickX / width) * video.duration;
 };
 
 /* Fullscreen */
 fullscreen.onclick = () => {
 
     if(document.fullscreenElement){
+
         document.exitFullscreen();
+
     }else{
-        document.getElementById('player-container').requestFullscreen();
+
+        document.getElementById('player')
+        .requestFullscreen();
     }
 };
+
+/* Format */
+function format(sec){
+
+    if(isNaN(sec)) return "00:00";
+
+    let minutes =
+    Math.floor(sec / 60);
+
+    let seconds =
+    Math.floor(sec % 60);
+
+    if(minutes < 10) minutes = "0" + minutes;
+
+    if(seconds < 10) seconds = "0" + seconds;
+
+    return minutes + ":" + seconds;
+}
 </script>
 
 </body>
