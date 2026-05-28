@@ -1,11 +1,10 @@
-<script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@clappr/player@latest/dist/clappr.min.js"></script>
 
 <div id="player"></div>
 
 <style>
 html,body{
     margin:0;
-    padding:0;
     width:100%;
     height:100%;
     background:#000;
@@ -13,27 +12,19 @@ html,body{
 }
 
 #player{
-    width:100%;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100vw;
     height:100vh;
-}
-
-/* Alt bar düzeltme */
-.clappr .media-control{
-    opacity:1 !important;
-    visibility:visible !important;
-    bottom:0 !important;
-}
-
-/* Video tam otursun */
-.clappr video{
-    object-fit:contain !important;
+    z-index:9999;
 }
 </style>
 
 <script>
 var player = new Clappr.Player({
 
-    source: "https://deneme-1-d0w5.onrender.com/proxy/m3u?url=http://vip-flying.xyz:2095/live/hs2254tv/hs2209dd00/104267.m3u8",
+    source: "https://rdchannel.rd.go.th/contents/msteam_live_13-08-63.mp4",
 
     parentId: "#player",
 
