@@ -1,73 +1,43 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Maç TV</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tam Ekran Clappr Player</title>
+    
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
 
-<style>
-    *{
-        margin:0;
-        padding:0;
-        box-sizing:border-box;
-    }
+    <style>
+        /* Ekranı tamamen kaplaması için CSS */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden; /* Kaydırma çubuklarını engeller */
+            background-color: black;
+        }
 
-    html,body{
-        width:100%;
-        height:100%;
-        background:#000;
-        overflow:hidden;
-    }
-
-    .player{
-        position:fixed;
-        inset:0;
-        width:100%;
-        height:100%;
-    }
-
-    iframe{
-        width:100%;
-        height:100%;
-        border:0;
-    }
-</style>
+        #player-wrapper {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
 </head>
 <body>
 
-<div class="player">
-    <iframe
-        id="mactv-iframe"
-        src="https://lovetier.bz/player/beINSPORTS1TR"
-        allowfullscreen
-        allow="autoplay; encrypted-media">
-    </iframe>
-</div>
+    <div id="player-wrapper"></div>
 
-<script>
-    const iframe = document.getElementById('mactv-iframe');
-
-    // Tam 5 dakikada bir (5 * 60 * 1000 milisaniye) otomatik yenileme döngüsü
-    setInterval(tazele, 5 * 60 * 1000);
-
-    // Ek Güvenlik: Eğer 5 dakika dolmadan yayın beklenmedik şekilde koparsa anında tetiklenir
-    iframe.addEventListener('error', function() {
-        console.log('Maç TV: Yayın koptu, anında yeni token alınıyor...');
-        tazele();
-    });
-
-    // Her siteye uyumlu Dinamik Tazeleme Fonksiyonu
-    function tazele() {
-        if (iframe) {
-            // URL'in sonundaki eski parametreleri temizleyip ana linki alıyoruz
-            let mevcutUrl = iframe.src.split('?')[0]; 
-            
-            // Sonuna yeni zaman damgası ekleyerek karşı siteden sıfır kilometre token çekiyoruz
-            iframe.src = mevcutUrl + "?t=" + new Date().getTime();
-            console.log('Maç TV: 5. dakika doldu, iframe başarıyla tazelendi. Kilit kırıldı!');
-        }
-    }
-</script>
-
+    <script>
+        var player = new Clappr.Player({
+            source: 'https://deneme-1-d0w5.onrender.com/proxy/m3u?url=http://vip-flying.xyz:2095/live/hs2254tv/hs2209dd00/104267.m3u8', // Buraya kendi video linkini koyabilirsin
+            parentId: '#player-wrapper',
+            width: '100%',
+            height: '100%',
+            autoPlay: true,
+            mute: false
+        });
+    </script>
 </body>
 </html>
