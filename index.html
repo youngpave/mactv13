@@ -1,262 +1,51 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Canlı Yayın</title>
 
-<title>LIVE PLAYER</title>
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.css">
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.polyfilled.js"></script>
 
 <style>
 html,body{
     margin:0;
-    padding:0;
-    width:100%;
+    background:#000;
     height:100%;
-    background:#000;
-    overflow:hidden;
-    font-family:Arial, sans-serif;
 }
-
-.player-container{
-    position:relative;
-    width:100%;
-    height:100vh;
-    background:#000;
-}
-
 video{
     width:100%;
-    height:100%;
-    object-fit:contain;
-    background:#000;
-}
-
-/* Alt bar */
-.controls{
-    position:absolute;
-    bottom:0;
-    left:0;
-    width:100%;
-    background:linear-gradient(to top, rgba(0,0,0,.9), rgba(0,0,0,.4));
-    padding:10px;
-    box-sizing:border-box;
-}
-
-/* Mavi çizgi */
-.progress{
-    width:100%;
-    height:4px;
-    background:rgba(255,255,255,.2);
-    border-radius:20px;
-    overflow:hidden;
-    margin-bottom:10px;
-}
-
-.progress-bar{
-    width:100%;
-    height:100%;
-    background:#00aaff;
-    animation:liveMove 2s linear infinite;
-}
-
-@keyframes liveMove{
-    0%{transform:translateX(-100%);}
-    100%{transform:translateX(100%);}
-}
-
-.bottom-controls{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-}
-
-.left-controls{
-    display:flex;
-    align-items:center;
-    gap:15px;
-}
-
-.btn{
-    color:white;
-    font-size:20px;
-    cursor:pointer;
-    user-select:none;
-}
-
-.live{
-    color:white;
-    font-size:15px;
-    font-weight:bold;
-    display:flex;
-    align-items:center;
-    gap:6px;
-}
-
-.live::before{
-    content:'';
-    width:10px;
-    height:10px;
-    background:red;
-    border-radius:50%;
-    animation:blink 1s infinite;
-}
-
-@keyframes blink{
-    50%{opacity:.3;}
-}
-
-.right-controls{
-    display:flex;
-    align-items:center;
-    gap:18px;
-}
-
-.icon{
-    color:white;
-    font-size:20px;
-    cursor:pointer;
-}
-
-/* Loading */
-.loader{
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    width:60px;
-    height:60px;
-    border:4px solid rgba(255,255,255,.2);
-    border-top:4px solid #00aaff;
-    border-radius:50%;
-    animation:spin 1s linear infinite;
-    z-index:5;
-}
-
-@keyframes spin{
-    100%{transform:translate(-50%,-50%) rotate(360deg);}
+    height:100vh;
 }
 </style>
 </head>
-
 <body>
 
-<div class="player-container">
-
-    <div class="loader" id="loader"></div>
-
-    <video id="video" autoplay playsinline muted></video>
-
-    <div class="controls">
-
-        <div class="progress">
-            <div class="progress-bar"></div>
-        </div>
-
-        <div class="bottom-controls">
-
-            <div class="left-controls">
-                <div class="btn" id="playBtn">❚❚</div>
-
-                <div class="btn" id="muteBtn">🔊</div>
-
-                <div class="live">LIVE</div>
-            </div>
-
-            <div class="right-controls">
-                <div class="icon">📷</div>
-                <div class="icon" id="fullscreenBtn">⛶</div>
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
+<video id="player" playsinline controls></video>
 
 <script>
-const video = document.getElementById('video');
-const loader = document.getElementById('loader');
+const video = document.getElementById('player');
+const source = "https://deneme-1-d0w5.onrender.com/proxy/m3u?url=http://vipceylim.xyz:2095/live/brknt1931/brk2404gg00/139901.m3u8";
 
-const streamUrl = "https://deneme-1-d0w5.onrender.com/proxy/m3u?url=http://vip-flying.xyz:2095/live/hs2254tv/hs2209dd00/104267.m3u8";
-
-/* Daha stabil HLS ayarları */
-if(Hls.isSupported()){
-
-    const hls = new Hls({
-        lowLatencyMode:true,
-        liveSyncDuration:3,
-        maxBufferLength:30,
-        maxMaxBufferLength:60,
-        backBufferLength:90,
-        enableWorker:true,
-        autoStartLoad:true,
-        fragLoadingTimeOut:20000,
-        manifestLoadingTimeOut:20000
-    });
-
-    hls.loadSource(streamUrl);
+if (Hls.isSupported()) {
+    const hls = new Hls();
+    hls.loadSource(source);
     hls.attachMedia(video);
-
-    hls.on(Hls.Events.MANIFEST_PARSED,function(){
-        video.play();
-    });
-
-    hls.on(Hls.Events.FRAG_BUFFERED,function(){
-        loader.style.display='none';
-    });
-
-    /* Donarsa otomatik toparla */
-    hls.on(Hls.Events.ERROR,function(event,data){
-
-        if(data.fatal){
-
-            switch(data.type){
-
-                case Hls.ErrorTypes.NETWORK_ERROR:
-                    console.log("Network Error");
-                    hls.startLoad();
-                    break;
-
-                case Hls.ErrorTypes.MEDIA_ERROR:
-                    console.log("Media Error");
-                    hls.recoverMediaError();
-                    break;
-
-                default:
-                    hls.destroy();
-                    break;
-            }
-        }
-    });
-
-}else if(video.canPlayType('application/vnd.apple.mpegurl')){
-    video.src = streamUrl;
+} else {
+    video.src = source;
 }
 
-/* Play Pause */
-const playBtn = document.getElementById('playBtn');
+new Plyr('#player',{
+    controls:[
+        'play',
+        'mute',
+        'volume',
+        'fullscreen'
+    ]
+});
+</script>
 
-playBtn.onclick = () => {
-
-    if(video.paused){
-        video.play();
-        playBtn.innerHTML='❚❚';
-    }else{
-        video.pause();
-        playBtn.innerHTML='▶';
-    }
-};
-
-/* Ses */
-const muteBtn = document.getElementById('muteBtn');
-
-muteBtn.onclick = () => {
-
-    video.muted = !video.muted;
-
-    muteBtn.innerHTML = video.muted ? '🔇' : '🔊';
-};
-
-/* Full
+</body>
+</html>
