@@ -1,51 +1,48 @@
 <!DOCTYPE html>
-<html>
+<html lang="tr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Canlı Yayın</title>
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.css">
-<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-<script src="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.polyfilled.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Maç TV</title>
 
 <style>
-html,body{
-    margin:0;
-    background:#000;
-    height:100%;
-}
-video{
-    width:100%;
-    height:100vh;
-}
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+    }
+
+    html,body{
+        width:100%;
+        height:100%;
+        background:#000;
+        overflow:hidden;
+    }
+
+    .player{
+        position:fixed;
+        inset:0;
+        width:100%;
+        height:100%;
+    }
+
+    iframe{
+        width:100%;
+        height:100%;
+        border:0;
+    }
 </style>
 </head>
 <body>
 
-<video id="player" playsinline controls></video>
-
-<script>
-const video = document.getElementById('player');
-const source = "https://deneme-1-d0w5.onrender.com/proxy/m3u?url=http://vipceylim.xyz:2095/live/brknt1931/brk2404gg00/139901.m3u8";
-
-if (Hls.isSupported()) {
-    const hls = new Hls();
-    hls.loadSource(source);
-    hls.attachMedia(video);
-} else {
-    video.src = source;
-}
-
-new Plyr('#player',{
-    controls:[
-        'play',
-        'mute',
-        'volume',
-        'fullscreen'
-    ]
-});
-</script>
+<div class="player">
+    <iframe
+        src="https://taratv21.shop/Main/Wtch/M105874"
+        referrerpolicy="no-referrer"
+        allowfullscreen
+        allow="autoplay; encrypted-media">
+    </iframe>
+</div>
 
 </body>
 </html>
