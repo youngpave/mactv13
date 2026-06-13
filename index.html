@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Nur'un Doğum Günü Geri Sayımı</title>
+    <title>Nur'un Doğum Günü</title>
     <style>
         body { background: #fce4ec; display: flex; justify-content: center; align-items: center; height: 100vh; font-family: sans-serif; }
         .box { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); text-align: center; }
@@ -17,15 +17,10 @@
 </div>
 
 <script>
-    // Sayfa ilk açıldığında hedef zamanı hafızaya al, yoksa oluştur
-    let hedefTarih = localStorage.getItem('nurDogumGunuHedef');
-
-    if (!hedefTarih) {
-        // 3 gün, 17 saat, 2 dakika sonrası
-        const sure = (3 * 24 * 60 * 60 * 1000) + (17 * 60 * 60 * 1000) + (2 * 60 * 1000);
-        hedefTarih = new Date().getTime() + sure;
-        localStorage.setItem('nurDogumGunuHedef', hedefTarih);
-    }
+    // 2 gün sonraki tarih ve saati buraya manuel girebilirsin:
+    // Örn: new Date('2026-06-16T23:59:00')
+    // Bugün 14 Haziran olduğuna göre 16 Haziran akşamını hedefliyoruz:
+    const hedefTarih = new Date('2026-06-16T23:59:00').getTime();
 
     function update() {
         const simdi = new Date().getTime();
