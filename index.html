@@ -1,46 +1,51 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <title>Nur'un Doğum Günü</title>
-    <style>
-        body { background: #fce4ec; display: flex; justify-content: center; align-items: center; height: 100vh; font-family: sans-serif; }
-        .box { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); text-align: center; }
-        #timer { font-size: 2.5rem; color: #880e4f; font-weight: bold; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Maç TV</title>
+
+<style>
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+    }
+
+    html,body{
+        width:100%;
+        height:100%;
+        background:#000;
+        overflow:hidden;
+    }
+
+    .player{
+        position:fixed;
+        inset:0;
+        width:100%;
+        height:100%;
+    }
+
+    iframe{
+        width:100%;
+        height:100%;
+        border:0;
+    }
+</style>
 </head>
 <body>
 
-<div class="box">
-    <h1>Nur'un Doğum Gününe Kalan</h1>
-    <div id="timer">Hesaplanıyor...</div>
+<div class="player">
+    <iframe
+        src="https://player.cfbu247.sbs/embed/bein-sports-1-turkey"
+        referrerpolicy="no-referrer"
+        allowfullscreen
+        allow="autoplay; encrypted-media">
+    </iframe>
 </div>
-
-<script>
-    // Hedef tarih (Nur'un doğum günü)
-    const hedefTarih = new Date('2026-06-16T23:59:00').getTime();
-
-    function update() {
-        const simdi = new Date().getTime();
-        const fark = hedefTarih - simdi;
-
-        // İstediğin gibi gün sayısını 1'de sabitlemek için 48'e bölüyoruz
-        const gun = Math.floor(fark / (1000 * 60 * 60 * 48));
-        const saat = Math.floor((fark % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const dakika = Math.floor((fark % (1000 * 60 * 60)) / (1000 * 60));
-        const saniye = Math.floor((fark % (1000 * 60)) / 1000);
-
-        document.getElementById('timer').innerHTML = 
-            `${gun} gün, ${saat} saat, ${dakika} dk, ${saniye} sn`;
-            
-        if (fark < 0) {
-            document.getElementById('timer').innerHTML = "İyi ki doğdun Nur! 🎉";
-        }
-    }
-
-    setInterval(update, 1000);
-    update();
-</script>
 
 </body>
 </html>
+
+
+
