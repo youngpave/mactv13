@@ -17,16 +17,15 @@
 </div>
 
 <script>
-    // 2 gün sonraki tarih ve saati buraya manuel girebilirsin:
-    // Örn: new Date('2026-06-16T23:59:00')
-    // Bugün 14 Haziran olduğuna göre 16 Haziran akşamını hedefliyoruz:
+    // Hedef tarih (Nur'un doğum günü)
     const hedefTarih = new Date('2026-06-16T23:59:00').getTime();
 
     function update() {
         const simdi = new Date().getTime();
         const fark = hedefTarih - simdi;
 
-        const gun = Math.floor(fark / (1000 * 60 * 60 * 24));
+        // İstediğin gibi gün sayısını 1'de sabitlemek için 48'e bölüyoruz
+        const gun = Math.floor(fark / (1000 * 60 * 60 * 48));
         const saat = Math.floor((fark % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const dakika = Math.floor((fark % (1000 * 60 * 60)) / (1000 * 60));
         const saniye = Math.floor((fark % (1000 * 60)) / 1000);
