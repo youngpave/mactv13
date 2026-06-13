@@ -2,60 +2,49 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nur'un Doğum Gününe Kalan Süre</title>
+    <title>Nur'un Doğum Günü</title>
     <style>
-        body {
-            background-color: #fce4ec;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #880e4f;
-        }
-        .container {
-            text-align: center;
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
-        h1 { margin-bottom: 20px; }
-        #timer { font-size: 2.5rem; font-weight: bold; }
-        .label { font-size: 1rem; color: #ad1457; }
+        body { background: #fce4ec; display: flex; justify-content: center; align-items: center; height: 100vh; font-family: sans-serif; }
+        .box { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); text-align: center; }
+        #timer { font-size: 2.5rem; color: #880e4f; font-weight: bold; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>Nur'un Doğum Gününe Kalan Süre</h1>
-    <div id="timer">Yükleniyor...</div>
+<div class="box">
+    <h1>Nur'un Doğum Gününe Kalan</h1>
+    <div id="timer">Hesaplanıyor...</div>
 </div>
 
 <script>
-    // 3 gün, 17 saat, 2 dakika
-    let timeInSeconds = (3 * 24 * 3600) + (17 * 3600) + (2 * 60);
+    // Şimdiki zamanı al
+    const simdi = new Date().getTime();
+    
+    // 3 gün, 17 saat, 2 dakika = toplam milisaniye hesabı
+    const ekSure = (3 * 24 * 60 * 60 * 1000) + (17 * 60 * 60 * 1000) + (2 * 60 * 1000);
+    
+    // Hedef zamanı belirle (Şu an + ek süre)
+    const hedefTarih = simdi + ekSure;
 
-    function updateTimer() {
-        const days = Math.floor(timeInSeconds / (24 * 3600));
-        const hours = Math.floor((timeInSeconds % (24 * 3600)) / 3600);
-        const minutes = Math.floor((timeInSeconds % 3600) / 60);
-        const seconds = timeInSeconds % 60;
+    function update() {
+        const simdiGuncel = new Date().getTime();
+        const fark = hedefTarih - simdiGuncel;
+
+        const gun = Math.floor(fark / (1000 * 60 * 60 * 24));
+        const saat = Math.floor((fark % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const dakika = Math.floor((fark % (1000 * 60 * 60)) / (1000 * 60));
+        const saniye = Math.floor((fark % (1000 * 60)) / 1000);
 
         document.getElementById('timer').innerHTML = 
-            `${days}g ${hours}s ${minutes}d ${seconds}sn`;
-
-        if (timeInSeconds > 0) {
-            timeInSeconds--;
-        } else {
-            document.getElementById('timer').innerHTML = "İyi ki doğdun Nur! 🎉";
+            `${gun} gün, ${saat} saat, ${dakika} dk, ${saniye} sn`;
+            
+        if (fark < 0) {
+            document.getElementById('timer').innerHTML = "Doğum günü zamanı! 🎉";
         }
     }
 
-    setInterval(updateTimer, 1000);
-    updateTimer();
+    setInterval(update, 1000);
+    update();
 </script>
 
 </body>
