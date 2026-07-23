@@ -1,1 +1,27 @@
-<iframe src="https://dlhd.st/cast/stream-62.php" width="100%" height="100%" style="border:0;" allowfullscreen></iframe>
+<?php
+$id = $_GET['id'] ?? '5ef7fc3ab9e9a10c';
+$targetUrl = "https://sonic.stvembed.top/embed_view.php?id=" . $id;
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $targetUrl);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+// Hedef sitenin engeline takılmamak için kendi alan adını veya hedef siteyi referer göster
+curl_setopt($ch, CURLOPT_REFERER, "https://sonic.stvembed.top/");
+curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36");
+// SSL doğrulamasını devre dışı bırak (test aşamasında sorun yaşamamak için)
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+
+$response = curl_exec($ch);
+$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+curl_close($ch);
+
+if ($httpCode == 200) {
+    // Sayfa içerisindeki m3u8 veya JS değişkenlerini ayıklamak için regex kullanabilirsin
+    // Örnek olarak gelen HTML'i doğrudan basabilir veya oynatıcıya yönlendirebilirsin
+    echo $response;
+} else {
+    echo "Bağlantı kurulamadı, HTTP Kodu: " . $httpCode;
+}
+?>
