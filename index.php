@@ -22,8 +22,8 @@ $httpCode = curl_getinfo($ch, CURL_INFO_HTTP_CODE);
 curl_close($ch);
 
 if ($httpCode == 200) {
-    // Hedef sayfanın düzgün yüklenmesi için tarayıcıya HTML içeriğini basıyoruz
-    echo $response;
+    // İçeriği ekrana güvenli bir şekilde metin olarak basıyoruz
+    echo "<pre>" . htmlspecialchars($response) . "</pre>";
 } else {
     echo "Akış Yüklenemedi, Hata Kodu: " . $httpCode;
 }
