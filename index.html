@@ -1,1 +1,132 @@
-<iframe src="https://dlhd.st/cast/stream-64.php" width="100%" height="100%" style="border:0;" allowfullscreen sandbox="allow-scripts allow-same-origin allow-forms allow-presentation"></iframe>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Maç TV Pro</title>
+<style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html, body { width:100%; height:100%; background:#000; overflow-x:hidden; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: #fff; }
+
+    .container { display: flex; width: 100vw; height: 100vh; }
+    
+    /* Sol Kanal Listesi Alanı */
+    .channels-section { width: 280px; height: 100%; background: #121212; padding: 15px; display: flex; flex-direction: column; border-right: 1px solid #222; overflow-y: auto; flex-shrink: 0; }
+    
+    .section-title { font-size: 16px; font-weight: bold; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 0.5px; color: #aaa; padding-left: 5px; }
+
+    /* Kanal Butonları Dikey Dizin */
+    .channel-grid { display: flex; flex-direction: column; gap: 10px; }
+    
+    .channel-btn { 
+        background: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 10px;
+        display: flex; align-items: center; gap: 10px; cursor: pointer; width: 100%; text-align: left;
+        transition: all 0.2s ease;
+    }
+    .channel-btn:hover { background: #2a2a2a; border-color: #444; transform: translateY(-2px); }
+    .channel-btn:active { background: #333; transform: translateY(0); }
+
+    /* Kanal Logosu */
+    .channel-logo { width: 30px; height: 30px; object-fit: contain; flex-shrink: 0; }
+
+    /* Kanal Yazısı */
+    .channel-info { display: flex; flex-direction: column; }
+    .channel-name { font-size: 14px; font-weight: 600; line-height: 1.2; color: #fff; }
+    .channel-meta { font-size: 10px; color: #888; margin-top: 2px; }
+
+    /* beIN SPORTS Logoları İçin Renkler */
+    .logo-bein { filter: brightness(0) invert(1); }
+
+    /* Sağ Video Oynatıcı Alanı */
+    .player-wrapper { flex: 1; height: 100%; background: #000; position: relative; }
+    iframe { width: 100%; height: 100%; border: 0; }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Sol Kanal Listesi -->
+    <div class="channels-section">
+        <div class="section-title">Kanallar</div>
+        
+        <div class="channel-grid">
+            <!-- BEIN SPORTS 1 (B1) -->
+            <button class="channel-btn" onclick="changeChannel('https://victorystreams.shop/streams/stream-62.php')">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/e/e5/BeIN_Sports_1_%282020%29.svg" alt="beIN 1" class="channel-logo logo-bein">
+                <div class="channel-info">
+                    <span class="channel-name">BEIN SPORTS 1</span>
+                    <span class="channel-meta">Canlı Yayın</span>
+                </div>
+            </button>
+
+            <!-- BEIN SPORTS 2 (B2) -->
+            <button class="channel-btn" onclick="changeChannel('https://victorystreams.shop/streams/stream-63.php')">
+                 <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/BeIN_Sports_2_%282020%29.svg" alt="beIN 2" class="channel-logo logo-bein">
+                <div class="channel-info">
+                    <span class="channel-name">BEIN SPORTS 2</span>
+                    <span class="channel-meta">Canlı Yayın</span>
+                </div>
+            </button>
+
+            <!-- BEIN SPORTS 3 (B3) -->
+            <button class="channel-btn" onclick="changeChannel('https://dlhd.st/cast/stream-64.php')">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/e/e0/BeIN_Sports_3_%282020%29.svg" alt="beIN 3" class="channel-logo logo-bein">
+                <div class="channel-info">
+                    <span class="channel-name">BEIN SPORTS 3</span>
+                    <span class="channel-meta">Canlı Yayın</span>
+                </div>
+            </button>
+            
+            <!-- BEIN SPORTS 4 (B4) -->
+            <button class="channel-btn" onclick="changeChannel('https://victorystreams.shop/streams/stream-67.php')">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/c/cd/BeIN_Sports_4_%282020%29.svg" alt="beIN 4" class="channel-logo logo-bein">
+                <div class="channel-info">
+                    <span class="channel-name">BEIN SPORTS 4</span>
+                    <span class="channel-meta">Canlı Yayın</span>
+                </div>
+            </button>
+
+            <!-- BEIN SPORTS Haber (B5) -->
+            <button class="channel-btn" onclick="changeChannel('https://victorystreams.shop/streams/stream-66.php')">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/3/38/BeIN_Sports_Haber_%282020%29.svg" alt="beIN Haber" class="channel-logo logo-bein">
+                <div class="channel-info">
+                    <span class="channel-name">BEIN SPORTS HABER</span>
+                    <span class="channel-meta">Son Dakika</span>
+                </div>
+            </button>
+        </div>
+    </div>
+
+    <!-- Sağ Video Oynatıcı -->
+    <div class="player-wrapper" id="playerContainer">
+        <iframe id="videoPlayer" 
+            src="https://dlhd.st/cast/stream-64.php" 
+            width="100%" 
+            height="100%" 
+            style="border:0;" 
+            allowfullscreen 
+            allow="autoplay; encrypted-media"
+            sandbox="allow-scripts allow-same-origin allow-forms allow-presentation">
+        </iframe>
+    </div>
+</div>
+
+<script>
+    function changeChannel(url) {
+        const playerContainer = document.getElementById('playerContainer');
+        playerContainer.innerHTML = `
+            <iframe id="videoPlayer" 
+                src="${url}" 
+                width="100%" 
+                height="100%" 
+                style="border:0;" 
+                allowfullscreen 
+                allow="autoplay; encrypted-media"
+                sandbox="allow-scripts allow-same-origin allow-forms allow-presentation">
+            </iframe>
+        `;
+    }
+</script>
+
+</body>
+</html>
