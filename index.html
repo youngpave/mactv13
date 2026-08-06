@@ -40,6 +40,23 @@
     /* Sağ Video Oynatıcı Alanı - Ekranın %80'i */
     .player-wrapper { width: 80%; height: 100%; background: #000; position: relative; }
     iframe { width: 100%; height: 100%; border: 0; }
+
+    /* Yayın Donarsa Hızlı Yenileme Butonu */
+    .reload-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: rgba(30, 30, 30, 0.8);
+        color: #aaa;
+        border: 1px solid #444;
+        padding: 6px 12px;
+        border-radius: 4px;
+        font-size: 11px;
+        cursor: pointer;
+        z-index: 10;
+        transition: all 0.2s;
+    }
+    .reload-btn:hover { background: rgba(50, 50, 50, 0.9); color: #fff; }
 </style>
 </head>
 <body>
@@ -86,7 +103,6 @@
                 </div>
             </button>
 
-
             <!-- B5 -->
             <button class="channel-btn" onclick="changeChannel('https://dlhd.st/cast/stream-1010.php')">
                 <img src="" alt="B5" class="channel-logo logo-bein">
@@ -100,6 +116,7 @@
 
     <!-- Sağ Video Oynatıcı (%80) -->
     <div class="player-wrapper" id="playerContainer">
+        <button class="reload-btn" onclick="reloadCurrentStream()">Yayın Dondu / Yenile</button>
         <iframe id="videoPlayer" 
             src="https://victorystreams.shop/streams/stream-62.php" 
             width="100%" 
@@ -113,11 +130,23 @@
 </div>
 
 <script>
+    let currentUrl = 'https://victorystreams.shop/streams/stream-62.php';
+
     function changeChannel(url) {
+        currentUrl = url;
+        updatePlayer();
+    }
+
+    function reloadCurrentStream() {
+        updatePlayer();
+    }
+
+    function updatePlayer() {
         const playerContainer = document.getElementById('playerContainer');
         playerContainer.innerHTML = `
+            <button class="reload-btn" onclick="reloadCurrentStream()">Yayın Dondu / Yenile</button>
             <iframe id="videoPlayer" 
-                src="${url}" 
+                src="${currentUrl}" 
                 width="100%" 
                 height="100%" 
                 style="border:0;" 
@@ -131,4 +160,3 @@
 
 </body>
 </html>
-
