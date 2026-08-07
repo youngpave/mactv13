@@ -40,23 +40,6 @@
     /* Sağ Video Oynatıcı Alanı - Ekranın %80'i */
     .player-wrapper { width: 80%; height: 100%; background: #000; position: relative; }
     iframe { width: 100%; height: 100%; border: 0; }
-
-    /* Yayın Donarsa Hızlı Yenileme Butonu */
-    .reload-btn {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        background: rgba(30, 30, 30, 0.8);
-        color: #aaa;
-        border: 1px solid #444;
-        padding: 6px 12px;
-        border-radius: 4px;
-        font-size: 11px;
-        cursor: pointer;
-        z-index: 10;
-        transition: all 0.2s;
-    }
-    .reload-btn:hover { background: rgba(50, 50, 50, 0.9); color: #fff; }
 </style>
 </head>
 <body>
@@ -75,12 +58,48 @@
                     <span class="channel-meta">Canlı</span>
                 </div>
             </button>
+
+            <!-- B2 -->
+            <button class="channel-btn" onclick="changeChannel('https://dlhd.st/watch/stream-63.php')">
+                 <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/BeIN_Sports_2_%282020%29.svg" alt="B2" class="channel-logo logo-bein">
+                <div class="channel-info">
+                    <span class="channel-name">B2</span>
+                    <span class="channel-meta">Canlı</span>
+                </div>
+            </button>
+
+            <!-- B3 -->
+            <button class="channel-btn" onclick="changeChannel('https://dlhd.st/cast/stream-64.php')">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/e/e0/BeIN_Sports_3_%282020%29.svg" alt="B3" class="channel-logo logo-bein">
+                <div class="channel-info">
+                    <span class="channel-name">B3</span>
+                    <span class="channel-meta">Canlı</span>
+                </div>
+            </button>
+            
+            <!-- B4 -->
+            <button class="channel-btn" onclick="changeChannel('https://victorystreams.shop/streams/stream-67.php')">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/c/cd/BeIN_Sports_4_%282020%29.svg" alt="B4" class="channel-logo logo-bein">
+                <div class="channel-info">
+                    <span class="channel-name">B4</span>
+                    <span class="channel-meta">Canlı</span>
+                </div>
+            </button>
+
+
+            <!-- B5 -->
+            <button class="channel-btn" onclick="changeChannel('https://dlhd.st/cast/stream-1010.php')">
+                <img src="" alt="B5" class="channel-logo logo-bein">
+                <div class="channel-info">
+                    <span class="channel-name">B5</span>
+                    <span class="channel-meta">Haber</span>
+                </div>
+            </button>
         </div>
     </div>
 
     <!-- Sağ Video Oynatıcı (%80) -->
     <div class="player-wrapper" id="playerContainer">
-        <button class="reload-btn" onclick="reloadCurrentStream()">Yayın Dondu / Yenile</button>
         <iframe id="videoPlayer" 
             src="https://victorystreams.shop/streams/stream-62.php" 
             width="100%" 
@@ -94,23 +113,11 @@
 </div>
 
 <script>
-    let currentUrl = 'https://victorystreams.shop/streams/stream-62.php';
-
     function changeChannel(url) {
-        currentUrl = url;
-        updatePlayer();
-    }
-
-    function reloadCurrentStream() {
-        updatePlayer();
-    }
-
-    function updatePlayer() {
         const playerContainer = document.getElementById('playerContainer');
         playerContainer.innerHTML = `
-            <button class="reload-btn" onclick="reloadCurrentStream()">Yayın Dondu / Yenile</button>
             <iframe id="videoPlayer" 
-                src="${currentUrl}" 
+                src="${url}" 
                 width="100%" 
                 height="100%" 
                 style="border:0;" 
@@ -124,3 +131,4 @@
 
 </body>
 </html>
+
