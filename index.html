@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -11,12 +10,10 @@
 
     .container { display: flex; width: 100vw; height: 100vh; }
     
-    /* Sol Kanal Listesi Alanı - Ekranın %20'si */
-    .channels-section { width: 20%; height: 100%; background: #121212; padding: 10px; display: flex; flex-direction: column; border-right: 1px solid #222; overflow-y: auto; flex-shrink: 0; z-index: 5; }
+    .channels-section { width: 20%; height: 100%; background: #121212; padding: 10px; display: flex; flex-direction: column; border-right: 1px solid #222; overflow-y: auto; flex-shrink: 0; }
     
     .section-title { font-size: 14px; font-weight: bold; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: #aaa; padding-left: 2px; }
 
-    /* Kanal Butonları Dikey Dizin */
     .channel-grid { display: flex; flex-direction: column; gap: 8px; }
     
     .channel-btn { 
@@ -27,73 +24,23 @@
     .channel-btn:hover { background: #2a2a2a; border-color: #444; }
     .channel-btn:active { background: #333; }
 
-    /* Kanal Logosu */
     .channel-logo { width: 24px; height: 24px; object-fit: contain; flex-shrink: 0; }
-
-    /* Kanal Yazısı */
     .channel-info { display: flex; flex-direction: column; }
     .channel-name { font-size: 13px; font-weight: 600; line-height: 1.2; color: #fff; }
     .channel-meta { font-size: 9px; color: #888; margin-top: 1px; }
 
-    /* beIN SPORTS Logoları İçin Renkler */
     .logo-bein { filter: brightness(0) invert(1); }
 
-    /* Sağ Video Oynatıcı Alanı - Ekranın %80'i */
     .player-wrapper { width: 80%; height: 100%; background: #000; position: relative; }
     iframe { width: 100%; height: 100%; border: 0; }
-
-    /* Kendi Eklediğimiz Üst Katman (Özel Player Katmanı) */
-    .custom-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.4); /* Arkadaki iframe'i hafif gösterir */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 10;
-        transition: opacity 0.3s ease;
-    }
-
-    /* Büyük Şık Başlat Tuşu */
-    .custom-play-btn {
-        background: #e50914;
-        color: white;
-        border: none;
-        padding: 15px 35px;
-        font-size: 18px;
-        font-weight: bold;
-        border-radius: 8px;
-        cursor: pointer;
-        box-shadow: 0 4px 15px rgba(229, 9, 20, 0.5);
-        transition: transform 0.2s, background 0.2s;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-    .custom-play-btn:hover {
-        background: #f40612;
-        transform: scale(1.05);
-    }
-
-    /* Oynatılmaya Başlandığında Katmanı Gizleme Sınıfı */
-    .hidden {
-        opacity: 0;
-        pointer-events: none;
-    }
 </style>
 </head>
 <body>
 
 <div class="container">
-    <!-- Sol Kanal Listesi (%20) -->
     <div class="channels-section">
         <div class="section-title">Kanallar</div>
-        
         <div class="channel-grid">
-            <!-- B1 -->
             <button class="channel-btn" onclick="changeChannel('https://victorystreams.shop/streams/stream-62.php')">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/e/e5/BeIN_Sports_1_%282020%29.svg" alt="B1" class="channel-logo logo-bein">
                 <div class="channel-info">
@@ -101,26 +48,20 @@
                     <span class="channel-meta">Canlı</span>
                 </div>
             </button>
-
-            <!-- B2 -->
-            <button class="channel-btn" onclick="changeChannel('https://dlhd.st/watch/stream-63.php')">
+            <button class="channel-btn" onclick="changeChannel('https://victorystreams.shop/streams/stream-63.php')">
                  <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/BeIN_Sports_2_%282020%29.svg" alt="B2" class="channel-logo logo-bein">
                 <div class="channel-info">
                     <span class="channel-name">B2</span>
                     <span class="channel-meta">Canlı</span>
                 </div>
             </button>
-
-            <!-- B3 -->
-            <button class="channel-btn" onclick="changeChannel('https://dlhd.st/cast/stream-64.php')">
+            <button class="channel-btn" onclick="changeChannel('https://victorystreams.shop/streams/stream-64.php')">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/e/e0/BeIN_Sports_3_%282020%29.svg" alt="B3" class="channel-logo logo-bein">
                 <div class="channel-info">
                     <span class="channel-name">B3</span>
                     <span class="channel-meta">Canlı</span>
                 </div>
             </button>
-            
-            <!-- B4 -->
             <button class="channel-btn" onclick="changeChannel('https://victorystreams.shop/streams/stream-67.php')">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/c/cd/BeIN_Sports_4_%282020%29.svg" alt="B4" class="channel-logo logo-bein">
                 <div class="channel-info">
@@ -128,9 +69,7 @@
                     <span class="channel-meta">Canlı</span>
                 </div>
             </button>
-
-            <!-- B5 -->
-            <button class="channel-btn" onclick="changeChannel('https://dlhd.st/cast/stream-1010.php')">
+            <button class="channel-btn" onclick="changeChannel('')">
                 <img src="" alt="B5" class="channel-logo logo-bein">
                 <div class="channel-info">
                     <span class="channel-name">B5</span>
@@ -140,22 +79,15 @@
         </div>
     </div>
 
-    <!-- Sağ Video Oynatıcı (%80) -->
     <div class="player-wrapper" id="playerContainer">
-        <!-- Kendi Üst Katmanımız ve Başlat Tuşumuz -->
-        <div class="custom-overlay" id="customOverlay">
-            <button class="custom-play-btn" onclick="startStream()">
-                ▶ Yayını Başlat
-            </button>
-        </div>
-
         <iframe id="videoPlayer" 
             src="https://victorystreams.shop/streams/stream-62.php" 
             width="100%" 
             height="100%" 
             style="border:0;" 
             allowfullscreen 
-            allow="autoplay; encrypted-media">
+            allow="autoplay; encrypted-media"
+            sandbox="allow-scripts allow-same-origin allow-forms allow-presentation">
         </iframe>
     </div>
 </div>
@@ -164,29 +96,16 @@
     function changeChannel(url) {
         const playerContainer = document.getElementById('playerContainer');
         playerContainer.innerHTML = `
-            <div class="custom-overlay" id="customOverlay">
-                <button class="custom-play-btn" onclick="startStream()">
-                    ▶ Yayını Başlat
-                </button>
-            </div>
             <iframe id="videoPlayer" 
                 src="${url}" 
                 width="100%" 
                 height="100%" 
                 style="border:0;" 
                 allowfullscreen 
-                allow="autoplay; encrypted-media">
+                allow="autoplay; encrypted-media"
+                sandbox="allow-scripts allow-same-origin allow-forms allow-presentation">
             </iframe>
         `;
-    }
-
-    function startStream() {
-        // "Yayını Başlat" tuşuna basıldığında üst katmanı ortadan kaldırıyoruz 
-        // böylece arkadaki iframe tamamen tıklanabilir ve oynatılabilir hale geliyor.
-        const overlay = document.getElementById('customOverlay');
-        if (overlay) {
-            overlay.classList.add('hidden');
-        }
     }
 </script>
 
