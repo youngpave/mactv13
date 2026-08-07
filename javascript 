@@ -1,4 +1,3 @@
-
 function changeChannel(url) {
     const playerContainer = document.getElementById('playerContainer');
     playerContainer.innerHTML = ''; 
@@ -9,16 +8,9 @@ function changeChannel(url) {
     iframe.width = '100%';
     iframe.height = '100%';
     iframe.style.border = '0';
-    
-    // Farklı Android cihazlarda kasmayı önlemek için donanım tetikleyicileri
-    iframe.setAttribute('allowfullscreen', 'true');
-    iframe.setAttribute('allow', 'autoplay; fullscreen; encrypted-media; picture-in-picture');
-    
-    // Performansı artırmak ve tarayıcının takılmasını önlemek için loading eager ekliyoruz
-    iframe.setAttribute('loading', 'eager');
-    
-    // Çoğu Android tarayıcısının (Samsung, Chrome vb.) sorunsuz kabul ettiği esnek sandbox
-    iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-presentation allow-top-navigation-by-user-activation');
+    iframe.setAttribute('allowfullscreen', '');
+    iframe.setAttribute('allow', 'autoplay; encrypted-media');
+    iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-presentation allow-top-navigation');
     
     playerContainer.appendChild(iframe);
 }
