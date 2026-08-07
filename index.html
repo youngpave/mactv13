@@ -48,14 +48,14 @@
                     <span class="channel-meta">Canlı</span>
                 </div>
             </button>
-            <button class="channel-btn" onclick="changeChannel('https://victorystreams.shop/streams/stream-63.php')">
+            <button class="channel-btn" onclick="changeChannel('https://dlhd.st/watch/stream-63.php')">
                  <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/BeIN_Sports_2_%282020%29.svg" alt="B2" class="channel-logo logo-bein">
                 <div class="channel-info">
                     <span class="channel-name">B2</span>
                     <span class="channel-meta">Canlı</span>
                 </div>
             </button>
-            <button class="channel-btn" onclick="changeChannel('https://victorystreams.shop/streams/stream-64.php')">
+            <button class="channel-btn" onclick="changeChannel('https://dlhd.st/cast/stream-64.php')">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/e/e0/BeIN_Sports_3_%282020%29.svg" alt="B3" class="channel-logo logo-bein">
                 <div class="channel-info">
                     <span class="channel-name">B3</span>
@@ -69,7 +69,7 @@
                     <span class="channel-meta">Canlı</span>
                 </div>
             </button>
-            <button class="channel-btn" onclick="changeChannel('')">
+            <button class="channel-btn" onclick="changeChannel('https://dlhd.st/cast/stream-1010.php')">
                 <img src="" alt="B5" class="channel-logo logo-bein">
                 <div class="channel-info">
                     <span class="channel-name">B5</span>
@@ -87,7 +87,7 @@
             style="border:0;" 
             allowfullscreen 
             allow="autoplay; encrypted-media"
-            sandbox="allow-scripts allow-same-origin allow-forms allow-presentation">
+            sandbox="allow-scripts allow-same-origin allow-forms allow-presentation allow-top-navigation">
         </iframe>
     </div>
 </div>
@@ -95,17 +95,19 @@
 <script>
     function changeChannel(url) {
         const playerContainer = document.getElementById('playerContainer');
-        playerContainer.innerHTML = `
-            <iframe id="videoPlayer" 
-                src="${url}" 
-                width="100%" 
-                height="100%" 
-                style="border:0;" 
-                allowfullscreen 
-                allow="autoplay; encrypted-media"
-                sandbox="allow-scripts allow-same-origin allow-forms allow-presentation">
-            </iframe>
-        `;
+        playerContainer.innerHTML = ''; 
+        
+        const iframe = document.createElement('iframe');
+        iframe.id = 'videoPlayer';
+        iframe.src = url;
+        iframe.width = '100%';
+        iframe.height = '100%';
+        iframe.style.border = '0';
+        iframe.setAttribute('allowfullscreen', '');
+        iframe.setAttribute('allow', 'autoplay; encrypted-media');
+        iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-presentation allow-top-navigation');
+        
+        playerContainer.appendChild(iframe);
     }
 </script>
 
