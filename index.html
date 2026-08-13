@@ -48,10 +48,10 @@
                     <span class="channel-meta">Canlı</span>
                 </div>
             </button>
-            <button class="channel-btn" onclick="changeChannel('https://zeustv269.cfd/ch.html?id=b1')">
+            <button class="channel-btn" onclick="changeChannel('https://rippleplays.cfd/newhub/stream-63.php')">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/e/e5/BeIN_Sports_1_%282020%29.svg" alt="B2" class="channel-logo logo-bein">
                 <div class="channel-info">
-                    <span class="channel-name">B1 YEDEK</span>
+                    <span class="channel-name">B2</span>
                     <span class="channel-meta">Canlı</span>
                 </div>
             </button>
@@ -71,6 +71,10 @@
     </div>
 </div>
 
-<script src="script.js"></script>
+<script>
+function changeChannel(url) {
+    document.getElementById('videoPlayer').src = url;
+}
+</script>
 </body>
 </html>
