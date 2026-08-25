@@ -131,23 +131,19 @@
 <body>
 
     <div class="container">
-        <!-- Ortadaki Video / Canlı Yayın Alanı (Sayfa açıldığında ilk video yüklenir) -->
+        <!-- Ortadaki Video / Canlı Yayın Alanı -->
         <div class="video-wrapper">
             <iframe id="youtubePlayer" src="https://www.youtube.com/embed/RVxX8oxN54k" title="BTS Live Translation" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
 
-        <!-- 30 Adet Dil Butonu Izgarası -->
+        <!-- Butonlar Izgarası -->
         <div class="buttons-grid">
-            <!-- 1. Buton (Jungkook Live - ID eklendi) -->
             <button class="lang-btn active" onclick="changeVideo('RVxX8oxN54k', this)">
                 <span class="btn-top">01</span><span class="btn-name">JUNGKOOK LİVE</span>
             </button>
-            
-            <!-- Diğer butonlar (Kendi video ID'lerinizi '' kısmına tırnak içinde yazabilirsiniz) -->
-
             <button class="lang-btn" onclick="changeVideo('GMDe31YpCZs', this)"><span class="btn-top">02</span><span class="btn-name">RM LİVE</span></button>
             <button class="lang-btn" onclick="changeVideo('DhMHYk1d0Ag', this)"><span class="btn-top">03</span><span class="btn-name">SUGA LİVE</span></button>
-            <button class="lang-btn" onclick="changeVideo('lyk6IuPS49g')"><span class="btn-top">04</span><span class="btn-name">Taehyung and Jungkook together </span></button>
+            <button class="lang-btn" onclick="changeVideo('lyk6IuPS49g', this)"><span class="btn-top">04</span><span class="btn-name">Taehyung and Jungkook together</span></button>
             <button class="lang-btn" onclick="changeVideo('LIVE_VIDEO_ID', this)"><span class="btn-top">05</span><span class="btn-name">FRENCH</span></button>
             <button class="lang-btn" onclick="changeVideo('LIVE_VIDEO_ID', this)"><span class="btn-top">06</span><span class="btn-name">GERMAN</span></button>
             <button class="lang-btn" onclick="changeVideo('LIVE_VIDEO_ID', this)"><span class="btn-top">07</span><span class="btn-name">CHINESE</span></button>
@@ -181,13 +177,11 @@
 
     <script>
         function changeVideo(videoId, clickedButton) {
-            // Butonların aktiflik durumunu güncelle
             document.querySelectorAll('.lang-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
             clickedButton.classList.add('active');
 
-            // Üstteki iframe'in kaynak adresini tıklanan butonun video ID'si ile değiştir
             document.getElementById('youtubePlayer').src = "https://www.youtube.com/embed/" + videoId;
         }
     </script>
