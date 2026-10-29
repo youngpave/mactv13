@@ -5,69 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Canlı Yayın Player</title>
     
-    <!-- Video.js CSS -->
-    <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
-    
+    <!-- Clappr Player Kütüphanesi -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@clappr/player@latest/dist/clappr.min.js"></script>
     <!-- Google Cast SDK (Zorunlu) -->
     <script type="text/javascript" src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
-    
-    <!-- Video.js Kütüphanesi -->
-    <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
-    
-    <!-- HLS Oynatıcı Desteği (m3u8 için şart) -->
-    <script src="https://cdn.jsdelivr.net/npm/@videojs/http-streaming@3.0.0/dist/videojs-http-streaming.min.js"></script>
-
-    <!-- Chromecast Eklentisi -->
-    <script src="https://cdn.jsdelivr.net/npm/@silvermine/videojs-chromecast@1.5.0/dist/silvermine-videojs-chromecast.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/@silvermine/videojs-chromecast@1.5.0/dist/silvermine-videojs-chromecast.css" rel="stylesheet" />
+    <!-- Clappr Chromecast Eklentisi -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clappr-chromecast-plugin@latest/dist/clappr-chromecast-plugin.min.js"></script>
 
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body, html {
             width: 100%; height: 100%;
             background-color: #000;
-            display: flex; justify-content: center; align-items: center;
             overflow: hidden;
         }
-        .video-container {
-            width: 100%; height: 100vh; position: relative;
-        }
-        .video-js {
-            width: 100% !important;
-            height: 100% !important;
-        }
-        /* Koyu şeffaf alt bar tasarımı */
-        .vjs-control-bar {
-            background: rgba(0, 0, 0, 0.75) !important;
-            height: 50px !important;
+        #player {
+            width: 100%;
+            height: 100vh;
         }
     </style>
 </head>
 <body>
 
-    <div class="video-container">
-        <video id="my-player" class="video-js vjs-big-play-centered" controls preload="auto">
-            <!-- Eklediğiniz m3u8 Yayın Linki -->
-            <source src="https://proxy.codenet.lol/live/A9A74EDC2AC55530B4D98B43C56B7908/25.m3u8" type="application/x-mpegURL">
-        </video>
-    </div>
+    <div id="player"></div>
 
     <script>
-        // Chromecast eklentisini entegre et
-        silvermineVideojsChromecast(videojs);
-
-        var player = videojs('my-player', {
-            autoplay: true,
-            muted: false,
-            controls: true,
-            liveui: true,
-            techOrder: ['html5'],
-            plugins: {
+        window.onload = function() {
+            var player = new Clappr.Player({
+                source: "https://proxy.codenet.lol/live/A9A74EDC2AC55530B4D98B43C56B7908/25.m3u8",
+                plugins: [ChromecastPlugin],
+                autoplay: true,
+                width: "100%",
+                height: "100%",
                 chromecast: {
-                    addButtonToControlBar: true,
+                    appId: "CC1AD845",
+                    media: {
+                        type: ChromecastPlugin.Movie,
+                        title: "Canlı Yayın",
+                    }
                 }
-            }
-        });
+            });
+        };
     </script>
 </body>
 </html>
