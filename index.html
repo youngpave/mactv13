@@ -1,26 +1,85 @@
-<video id="videoPlayer" controls autoplay playsinline style="width: 100%; height: 500px; background: #000; border-radius: 8px;"></video>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canlı Yayın Player</title>
+    
+    <!-- Video.js CSS -->
+    <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
+    <!-- Google Cast SDK -->
+    <script type="text/javascript" src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
+    <!-- Video.js Kütüphanesi -->
+    <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+    <!-- Video.js Chromecast Eklentisi -->
+    <script src="https://cdn.jsdelivr.net/npm/@silvermine/videojs-chromecast@1.5.0/dist/silvermine-videojs-chromecast.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@silvermine/videojs-chromecast@1.5.0/dist/silvermine-videojs-chromecast.css" rel="stylesheet" />
 
-<!-- Hls.js Kütüphanesi -->
-<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-<script>
-  var video = document.getElementById('videoPlayer');
-  var streamUrl = 'https://taraftarium24.one/api/proxy?u=http%3A%2F%2Fdenemelerle8.live%3A8080%2Flive%2F7XXYf18KaZ%2F189XDeCXMV%2F4603.m3u8&ch=ch_mu3erucn36d3f3';
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body, html {
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+        .video-container {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+        }
+        /* Görseldeki minimalist alt kontrol barı özelleştirmeleri */
+        .video-js {
+            width: 100% !important;
+            height: 100% !important;
+        }
+        .vjs-control-bar {
+            background: linear-gradient(0deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0) 100%) !important;
+            height: 48px !important;
+        }
+        .vjs-button > .vjs-icon-placeholder:before {
+            font-size: 1.8em !important;
+            line-height: 48px !important;
+        }
+        /* Chromecast Butonu Stili */
+        .vjs-chromecast-button {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
 
-  if (Hls.isSupported()) {
-    var hls = new Hls();
-    hls.loadSource(streamUrl);
-    hls.attachMedia(video);
-    hls.on(Hls.Events.MANIFEST_PARSED, function() {
-      video.play().catch(function(error) {
-        console.log("Otomatik oynatma tarayıcı tarafından engellendi:", error);
-      });
-    });
-  } 
-  // Safari ve iOS cihazlar için yerel destek
-  else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-    video.src = streamUrl;
-    video.addEventListener('loadedmetadata', function() {
-      video.play();
-    });
-  }
-</script>
+    <div class="video-container">
+        <video id="custom-player" class="video-js vjs-big-play-centered" controls preload="auto">
+            <!-- m3u8 Yayın Linkinizi buraya yazın -->
+            <source src="BURAYA_M3U8_LINKINIZI_YAZIN.m3u8" type="application/x-mpegURL">
+        </video>
+    </div>
+
+    <script>
+        // Chromecast eklentisini videojs'e kaydet
+        silvermineVideojsChromecast(videojs);
+
+        var player = videojs('custom-player', {
+            autoplay: true,
+            muted: false,
+            controls: true,
+            liveui: true, // Görseldeki LIVE / Canlı göstergesi için
+            techOrder: ['html5'],
+            plugins: {
+                chromecast: {
+                    addButtonToControlBar: true, // Sağ alt köşeye Cast ikonunu ekler
+                },
+            },
+        });
+    </script>
+</body>
+</html>
