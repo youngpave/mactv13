@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Canlı Yayın Player</title>
+    <title>XCIPTV Web Player</title>
     
     <!-- Clappr Player Kütüphanesi -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@clappr/player@latest/dist/clappr.min.js"></script>
@@ -16,8 +16,31 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body, html {
             width: 100%; height: 100%;
-            background-color: #000;
+            background-color: #0f1015; /* XCIPTV koyu arayüz arka planı */
             overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        /* Üst Bilgi Barı (XCIPTV Tarzı) */
+        .xciptv-header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            pointer-events: none;
+        }
+        .xciptv-header span {
+            color: #e50914;
+            margin-right: 8px;
         }
         #player {
             width: 100%;
@@ -26,6 +49,11 @@
     </style>
 </head>
 <body>
+
+    <!-- Üst Başlık Alanı -->
+    <div class="xciptv-header">
+        <span>■</span> CANLI YAYIN - XCIPTV WEB
+    </div>
 
     <div id="player"></div>
 
