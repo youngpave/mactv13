@@ -7,78 +7,66 @@
     
     <!-- Video.js CSS -->
     <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
-    <!-- Google Cast SDK -->
+    
+    <!-- Google Cast SDK (Zorunlu) -->
     <script type="text/javascript" src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
+    
     <!-- Video.js Kütüphanesi -->
     <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
-    <!-- Video.js Chromecast Eklentisi -->
+    
+    <!-- HLS Oynatıcı Desteği (m3u8 için şart) -->
+    <script src="https://cdn.jsdelivr.net/npm/@videojs/http-streaming@3.0.0/dist/videojs-http-streaming.min.js"></script>
+
+    <!-- Chromecast Eklentisi -->
     <script src="https://cdn.jsdelivr.net/npm/@silvermine/videojs-chromecast@1.5.0/dist/silvermine-videojs-chromecast.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/@silvermine/videojs-chromecast@1.5.0/dist/silvermine-videojs-chromecast.css" rel="stylesheet" />
 
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body, html {
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             background-color: #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            display: flex; justify-content: center; align-items: center;
             overflow: hidden;
-            font-family: Arial, sans-serif;
         }
         .video-container {
-            width: 100%;
-            height: 100vh;
-            position: relative;
+            width: 100%; height: 100vh; position: relative;
         }
-        /* Görseldeki minimalist alt kontrol barı özelleştirmeleri */
         .video-js {
             width: 100% !important;
             height: 100% !important;
         }
+        /* Koyu şeffaf alt bar tasarımı */
         .vjs-control-bar {
-            background: linear-gradient(0deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0) 100%) !important;
-            height: 48px !important;
-        }
-        .vjs-button > .vjs-icon-placeholder:before {
-            font-size: 1.8em !important;
-            line-height: 48px !important;
-        }
-        /* Chromecast Butonu Stili */
-        .vjs-chromecast-button {
-            cursor: pointer;
+            background: rgba(0, 0, 0, 0.75) !important;
+            height: 50px !important;
         }
     </style>
 </head>
 <body>
 
     <div class="video-container">
-        <video id="custom-player" class="video-js vjs-big-play-centered" controls preload="auto">
-            <!-- https://proxy.codenet.lol/live/A9A74EDC2AC55530B4D98B43C56B7908/25.m3u8-->
-            <source https://proxy.codenet.lol/live/A9A74EDC2AC55530B4D98B43C56B7908/25.m3u8" type="application/x-mpegURL">
+        <video id="my-player" class="video-js vjs-big-play-centered" controls preload="auto">
+            <!-- Eklediğiniz m3u8 Yayın Linki -->
+            <source src="https://proxy.codenet.lol/live/A9A74EDC2AC55530B4D98B43C56B7908/25.m3u8" type="application/x-mpegURL">
         </video>
     </div>
 
     <script>
-        // Chromecast eklentisini videojs'e kaydet
+        // Chromecast eklentisini entegre et
         silvermineVideojsChromecast(videojs);
 
-        var player = videojs('custom-player', {
+        var player = videojs('my-player', {
             autoplay: true,
             muted: false,
             controls: true,
-            liveui: true, // Görseldeki LIVE / Canlı göstergesi için
+            liveui: true,
             techOrder: ['html5'],
             plugins: {
                 chromecast: {
-                    addButtonToControlBar: true, // Sağ alt köşeye Cast ikonunu ekler
-                },
-            },
+                    addButtonToControlBar: true,
+                }
+            }
         });
     </script>
 </body>
